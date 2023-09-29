@@ -12,5 +12,5 @@
 - [ ] Implementar comando de jogada (Xlc e Clc).
 - [ ] Implementar os comandos de novo jogo (c) e sair (s).
 - [ ] Implementar identificação de vitória.
-- [ ] Implementar prompt de último comando comando.
+- [ ] Implementar prompt de último comando.
 - [ ] Implementar identificação de erros.
