@@ -4,6 +4,7 @@
 ;
 
 global line
+extern cor
 
 segment code
 ; ..start:
@@ -666,7 +667,7 @@ fim_line:
 ;*******************************************************************
 segment data
 
-cor	db amarelo
+; cor		db		0
 
 ; ;	I R G B COR
 ; ;	0 0 0 0 preto
@@ -700,7 +701,7 @@ cor	db amarelo
 ; cyan_claro	equ		11
 ; rosa		equ		12
 ; magenta_claro	equ		13
-amarelo		equ		14
+; amarelo		equ		14
 ; branco_intenso	equ		15
 
 ; modo_anterior	db		0
