@@ -1,6 +1,9 @@
 ; Caio Alves Fiorotti - ELE15942 05.1N SISTEMAS EMBARCADOS I 
 ; Matheus Meier Schreiber - ELE15942 05.1N SISTEMAS EMBARCADOS I
 
+; Exportando variáveis
+global cor
+
 ; Importação de funções
 extern line
 
@@ -27,7 +30,7 @@ segment codigo
 
   call desenha_tabuleiro
 
-  mov ah,08h
+  mov ah, 0x08
   int 21h
   jmp exit ; Pula para o fim do programa
 
@@ -53,8 +56,8 @@ desenha_tabuleiro:
 
 
 exit:
-  mov ah,0 ; set video mode
-	mov al,[modo_anterior] ; recupera o modo anterior
+  mov ah, 0 ; set video mode
+	mov al, [modo_anterior] ; recupera o modo anterior
 	int 10h
 
   mov ax, 0x4c00 ; Move o valor 0x4c00 para AX (parâmetro que finaliza o programa na inetrrupção 0x21)
