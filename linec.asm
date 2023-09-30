@@ -3,11 +3,13 @@
 ; circle e full_circle disponibilizados por Jefferson Moro em 10/2009
 ;
 
+; Exportando funções
 global line
+; Importando variáveis
 extern cor
 
 segment code
-; ..start:
+..start:
 ;     		mov 		ax,data
 ;     		mov 		ds,ax
 ;     		mov 		ax,stack
@@ -667,7 +669,7 @@ fim_line:
 ;*******************************************************************
 segment data
 
-; cor		db		0
+; cor		db		branco_intenso
 
 ; ;	I R G B COR
 ; ;	0 0 0 0 preto
