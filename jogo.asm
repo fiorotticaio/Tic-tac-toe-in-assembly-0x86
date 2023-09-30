@@ -1,13 +1,15 @@
 ; Caio Alves Fiorotti - ELE15942 05.1N SISTEMAS EMBARCADOS I 
 ; Matheus Meier Schreiber - ELE15942 05.1N SISTEMAS EMBARCADOS I
 
+
 ; Exportando variáveis
 global cor
 ; Importando funções
 extern line
 
-segment codigo
 
+
+segment codigo
 ..start:
   ; Inicialização dos registradores de segmento e stack pointer 
   xor ax, ax ; Limpa AX
@@ -17,7 +19,7 @@ segment codigo
   mov ss, ax ; Move o endereço do segmento de pilha para SS
   mov sp, topo_pilha ; Move o endereço do topo da pilha para SP
 
-  ; Salvar modo corrente de video(vendo como está o modo de video da maquina)
+  ; Salvar modo corrente de video (vendo como está o modo de video da maquina)
 	mov ah, 0x0f
 	int 0x10
 	mov [modo_anterior], al   
@@ -27,10 +29,11 @@ segment codigo
 	mov ah, 0
 	int 0x10
 
-  call desenha_tabuleiro
+  call desenha_tabuleiro ; Desenha o tabuleiro
 
+  ; Lê um caractere da entrada padrão
   mov ah, 0x08
-  int 21h
+  int 21h ; Só sai dali quando ler algum caractere da entrada padrão
   jmp exit ; Pula para o fim do programa
 
 
@@ -179,8 +182,8 @@ desenha_tabuleiro:
 
 
 exit:
-  mov ah, 0 ; set video mode
-	mov al, [modo_anterior] ; recupera o modo anterior
+  mov ah, 0 ; Set video mode
+	mov al, [modo_anterior] ; Recupera o modo anterior
 	int 10h
 
   mov ax, 0x4c00 ; Move o valor 0x4c00 para AX (parâmetro que finaliza o programa na inetrrupção 0x21)
@@ -209,6 +212,7 @@ segment dados
   branco_intens equ 15
 
   modo_anterior	db 0
+
 
 
 segment pilha pilha
