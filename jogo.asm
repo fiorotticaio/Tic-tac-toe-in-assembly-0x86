@@ -35,7 +35,7 @@ segment codigo
 
 
 desenha_tabuleiro:
-  mov	byte[cor], branco ; Seta a cor das linhas 
+  mov	byte[cor], branco ; Seta a cor da linha para branco
 
   ; Desenha primiera linha horizontal
   mov	ax, 170
@@ -81,8 +81,100 @@ desenha_tabuleiro:
   push ax
   call line
 
-  ret
 
+  ; Desenhando campo de comando
+  mov byte[cor], cyan ; Setaando a cor da linha para ciano
+  ; Desenhando a linha de cima
+  mov	ax, 50
+  push ax
+  mov	ax, 100
+  push ax
+  mov	ax, 590
+  push ax
+  mov	ax, 100
+  push ax
+  call line
+
+  ; Desenhando a linha de baixo
+  mov	ax, 50
+  push ax
+  mov	ax, 70
+  push ax
+  mov	ax, 590
+  push ax
+  mov	ax, 70
+  push ax
+  call line
+
+  ; Desenhando a linha da esquerda
+  mov	ax, 50
+  push ax
+  mov	ax, 100
+  push ax
+  mov	ax, 50
+  push ax
+  mov	ax, 70
+  push ax
+  call line
+
+  ; Desenhando a linha da direita
+  mov	ax, 590
+  push ax
+  mov	ax, 100
+  push ax
+  mov	ax, 590
+  push ax
+  mov	ax, 70
+  push ax
+  call line
+
+
+  ; Desenhando campo de mensagens
+  ; Desenhando a linha de cima
+  mov	ax, 50
+  push ax
+  mov	ax, 50
+  push ax
+  mov	ax, 590
+  push ax
+  mov	ax, 50
+  push ax
+  call line
+
+  ; Desenhando a linha de baixo
+  mov	ax, 50
+  push ax
+  mov	ax, 20
+  push ax
+  mov	ax, 590
+  push ax
+  mov	ax, 20
+  push ax
+  call line
+
+  ; Desenhando a linha da esquerda
+  mov	ax, 50
+  push ax
+  mov	ax, 50
+  push ax
+  mov	ax, 50
+  push ax
+  mov	ax, 20
+  push ax
+  call line
+
+  ; Desenhando a linha da direita
+  mov	ax, 590
+  push ax
+  mov	ax, 50
+  push ax
+  mov	ax, 590
+  push ax
+  mov	ax, 20
+  push ax
+  call line
+
+  ret ; Retorna da função
 
 
 
@@ -93,10 +185,6 @@ exit:
 
   mov ax, 0x4c00 ; Move o valor 0x4c00 para AX (parâmetro que finaliza o programa na inetrrupção 0x21)
   int 0x21 ; Chama a interrupção 0x21
-
-
-
-
 
 
 
