@@ -3,8 +3,7 @@
 
 ; Exportando variáveis
 global cor
-
-; Importação de funções
+; Importando funções
 extern line
 
 segment codigo
