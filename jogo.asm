@@ -35,19 +35,51 @@ segment codigo
 
 
 desenha_tabuleiro:
-  ; Desenha primiera linha
-  mov	byte[cor], branco
-  mov	ax, 0
+  mov	byte[cor], branco ; Seta a cor das linhas 
+
+  ; Desenha primiera linha horizontal
+  mov	ax, 170
   push ax
-  mov	ax, 159
+  mov	ax, 350
   push ax
-  mov	ax, 639
+  mov	ax, 470
   push ax
-  mov	ax, 159
+  mov	ax, 350
   push ax
   call line
 
-  ; Desenha segunda linha
+  ; Desenha segunda linha horizontal
+  mov	ax, 170
+  push ax
+  mov	ax, 250
+  push ax
+  mov	ax, 470
+  push ax
+  mov	ax, 250
+  push ax
+  call line
+
+  ; Desenha primeira linha vertical
+  mov	ax, 270
+  push ax
+  mov	ax, 450
+  push ax
+  mov	ax, 270
+  push ax
+  mov	ax, 150
+  push ax
+  call line
+
+  ; Desenha segunda linha vertical
+  mov	ax, 370
+  push ax
+  mov	ax, 450
+  push ax
+  mov	ax, 370
+  push ax
+  mov	ax, 150
+  push ax
+  call line
 
   ret
 
