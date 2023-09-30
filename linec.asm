@@ -1,177 +1,170 @@
-; vers�o de 10/05/2007
-; corrigido erro de arredondamento na rotina line.
-; circle e full_circle disponibilizados por Jefferson Moro em 10/2009
-;
-
 ; Exportando funções
 global line
 ; Importando variáveis
 extern cor
 
+
 segment code
 ..start:
-;     		mov 		ax,data
-;     		mov 		ds,ax
-;     		mov 		ax,stack
-;     		mov 		ss,ax
-;     		mov 		sp,stacktop
+	; mov ax,data
+	; mov ds,ax
+	; mov ax,stack
+	; mov ss,ax
+	; mov sp,stacktop
 
-; ; salvar modo corrente de video(vendo como est� o modo de video da maquina)
-;             mov  		ah,0Fh
-;     		int  		10h
-;     		mov  		[modo_anterior],al   
+	; salvar modo corrente de video(vendo como est� o modo de video da maquina)
+  mov ah, 0x0f
+  int 0x10
+  mov [modo_anterior], al   
 
-; ; alterar modo de video para gr�fico 640x480 16 cores
-;     	mov     	al,12h
-;    		mov     	ah,0
-;     	int     	10h
-		
+	; alterar modo de video para gr�fico 640x480 16 cores
+	mov al, 0x12
+	mov ah, 0
+	int 0x10
 
-; ;desenhar retas
+	; desenhar retas
+	mov	byte[cor], branco_intenso	; antenas
+	mov	ax, 20
+	push ax
+	mov ax, 400
+	push ax
+	mov ax, 620
+	push ax
+	mov ax, 400
+	push ax
+	call		line
+	
+	mov byte[cor], marrom	;antenas
+	mov ax, 130
+	push ax
+	mov ax, 270
+	push ax
+	mov ax, 100
+	push ax
+	mov ax, 300
+	push ax
+	call		line
+	
+	mov ax, 130
+	push ax
+	mov ax, 130
+	push ax
+	mov ax, 100
+	push ax
+	mov ax, 100
+	push ax
+	call		line
+		
+  ; desenha circulos 
+	mov byte[cor], azul	;cabe�a
+	mov ax, 200
+	push ax
+	mov ax, 200
+	push ax
+	mov ax, 100
+	push ax
+	call	circle
 
-; 		mov		byte[cor],branco_intenso	;antenas
-; 		mov		ax,20
-; 		push		ax
-; 		mov		ax,400
-; 		push		ax
-; 		mov		ax,620
-; 		push		ax
-; 		mov		ax,400
-; 		push		ax
-; 		call		line
-		
-; 		mov		byte[cor],marrom	;antenas
-; 		mov		ax,130
-; 		push		ax
-; 		mov		ax,270
-; 		push		ax
-; 		mov		ax,100
-; 		push		ax
-; 		mov		ax,300
-; 		push		ax
-; 		call		line
-		
-; 		mov		ax,130
-; 		push		ax
-; 		mov		ax,130
-; 		push		ax
-; 		mov		ax,100
-; 		push		ax
-; 		mov		ax,100
-; 		push		ax
-; 		call		line
-		
-		
-; ;desenha circulos 
-; 		mov		byte[cor],azul	;cabe�a
-; 		mov		ax,200
-; 		push		ax
-; 		mov		ax,200
-; 		push		ax
-; 		mov		ax,100
-; 		push		ax
-; 		call	circle
-
-; 		mov		byte[cor],verde	;corpo
-; 		mov		ax,450
-; 		push		ax
-; 		mov		ax,200
-; 		push		ax
-; 		mov		ax,190
-; 		push		ax
-; 		call	circle
-		
-; 		mov		ax,100	;circulos das antenas
-; 		push		ax
-; 		mov		ax,100
-; 		push		ax
-; 		mov		ax,10
-; 		push		ax
-; 		call	circle
-		
-; 		mov		ax,100
-; 		push		ax
-; 		mov		ax,300
-; 		push		ax
-; 		mov		ax,10
-; 		push		ax
-; 		call	circle
-		
-; 		mov		byte[cor],vermelho	;circulos vermelhos
-; 		mov		ax,500
-; 		push		ax
-; 		mov		ax,300
-; 		push		ax
-; 		mov		ax,50
-; 		push		ax
-; 		call	full_circle
-		
-; 		mov		ax,500
-; 		push		ax
-; 		mov		ax,100
-; 		push		ax
-; 		mov		ax,50
-; 		push		ax
-; 		call	full_circle
-		
-; 		mov		ax,350
-; 		push		ax
-; 		mov		ax,200
-; 		push		ax
-; 		mov		ax,50
-; 		push		ax
-; 		call	full_circle
+	mov byte[cor], verde	;corpo
+	mov ax, 450
+	push ax
+	mov ax, 200
+	push ax
+	mov ax, 190
+	push ax
+	call	circle
+	
+	mov ax, 100	;circulos das antenas
+	push ax
+	mov ax, 100
+	push ax
+	mov ax, 10
+	push ax
+	call	circle
+	
+	mov ax, 100
+	push ax
+	mov ax, 300
+	push ax
+	mov ax, 10
+	push ax
+	call	circle
+	
+	mov byte[cor], vermelho	;circulos vermelhos
+	mov ax, 500
+	push ax
+	mov ax, 300
+	push ax
+	mov ax, 50
+	push ax
+	call	full_circle
+	
+	mov ax, 500
+	push ax
+	mov ax, 100
+	push ax
+	mov ax, 50
+	push ax
+	call	full_circle
+	
+	mov ax, 350
+	push ax
+	mov ax, 200
+	push ax
+	mov ax, 50
+	push ax
+	call	full_circle
 		
 
-; ;escrever uma mensagem
+	; escrever uma mensagem
+	mov cx, 14 ; número de caracteres
+	mov bx, 0
+	mov dh, 0	; Linha 0-29
+	mov dl, 30 ; Coluna 0-79
+	mov byte[cor], azul
 
-;     	mov     	cx,14			;n�mero de caracteres
-;     	mov     	bx,0
-;     	mov     	dh,0			;linha 0-29
-;     	mov     	dl,30			;coluna 0-79
-; 		mov		byte[cor],azul
-; l4:
-; 		call	cursor
-;     	mov     al,[bx+mens]
-; 		call	caracter
-;     	inc     bx			;proximo caracter
-; 		inc		dl			;avanca a coluna
-; 		inc		byte [cor]		;mudar a cor para a seguinte
-;     	loop    l4
+l4:
+	call cursor
+	mov al, [bx+mens]
+	call caracter
+	inc bx ; Proximo caracter
+	inc dl ; Avanca a coluna
+	inc	byte [cor] ; Mudar a cor para a seguinte
+	loop l4
 
-; 		mov    	ah,08h
-; 		int     21h
-; 	    mov  	ah,0   			; set video mode
-; 	    mov  	al,[modo_anterior]   	; modo anterior
-; 	    int  	10h
-; 		mov     ax,4c00h
-; 		int     21h
+	mov ah, 0x08
+	int 0x21
+	mov ah, 0 ; Set video mode
+	mov al, [modo_anterior] ; Modo anterior
+	int 0x10
+	mov ax, 0x4c00
+	int 0x21
 ;***************************************************************************
 ;
 ;   fun��o cursor
 ;
 ; dh = linha (0-29) e  dl=coluna  (0-79)
 cursor:
-		pushf
-		push 		ax
-		push 		bx
-		push		cx
-		push		dx
-		push		si
-		push		di
-		push		bp
-		mov     	ah,2
-		mov     	bh,0
-		int     	10h
-		pop		bp
-		pop		di
-		pop		si
-		pop		dx
-		pop		cx
-		pop		bx
-		pop		ax
-		popf
-		ret
+	pushf
+	push ax
+	push bx
+	push cx
+	push dx
+	push si
+	push di
+	push bp
+	mov ah,2
+	mov bh,0
+	int 10h
+	pop	bp
+	pop	di
+	pop	si
+	pop	dx
+	pop	cx
+	pop	bx
+	pop	ax
+	popf
+	ret
 ;_____________________________________________________________________________
 ;
 ;   fun��o caracter escrito na posi��o do cursor
@@ -179,28 +172,28 @@ cursor:
 ; al= caracter a ser escrito
 ; cor definida na variavel cor
 caracter:
-		pushf
-		push 		ax
-		push 		bx
-		push		cx
-		push		dx
-		push		si
-		push		di
-		push		bp
-    		mov     	ah,9
-    		mov     	bh,0
-    		mov     	cx,1
-   		mov     	bl,[cor]
-    		int     	10h
-		pop		bp
-		pop		di
-		pop		si
-		pop		dx
-		pop		cx
-		pop		bx
-		pop		ax
-		popf
-		ret
+	pushf
+	push ax
+	push bx
+	push cx
+	push dx
+	push si
+	push di
+	push bp
+	mov ah, 9
+	mov bh, 0
+	mov cx, 1
+	mov bl, [cor]
+	int 10h
+	pop	bp
+	pop	di
+	pop	si
+	pop	dx
+	pop	cx
+	pop	bx
+	pop	ax
+	popf
+	ret
 ;_____________________________________________________________________________
 ;
 ;   fun��o plot_xy
