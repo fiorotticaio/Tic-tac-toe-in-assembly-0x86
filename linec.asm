@@ -13,132 +13,132 @@ segment code
 	; mov sp,stacktop
 
 	; salvar modo corrente de video(vendo como est� o modo de video da maquina)
-  mov ah, 0x0f
-  int 0x10
-  mov [modo_anterior], al   
+;   mov ah, 0x0f
+;   int 0x10
+;   mov [modo_anterior], al   
 
-	; alterar modo de video para gr�fico 640x480 16 cores
-	mov al, 0x12
-	mov ah, 0
-	int 0x10
+; 	; alterar modo de video para gr�fico 640x480 16 cores
+; 	mov al, 0x12
+; 	mov ah, 0
+; 	int 0x10
 
-	; desenhar retas
-	mov	byte[cor], branco_intenso	; antenas
-	mov	ax, 20
-	push ax
-	mov ax, 400
-	push ax
-	mov ax, 620
-	push ax
-	mov ax, 400
-	push ax
-	call		line
+; 	; desenhar retas
+; 	mov	byte[cor], branco_intenso	; antenas
+; 	mov	ax, 20
+; 	push ax
+; 	mov ax, 400
+; 	push ax
+; 	mov ax, 620
+; 	push ax
+; 	mov ax, 400
+; 	push ax
+; 	call		line
 	
-	mov byte[cor], marrom	;antenas
-	mov ax, 130
-	push ax
-	mov ax, 270
-	push ax
-	mov ax, 100
-	push ax
-	mov ax, 300
-	push ax
-	call		line
+; 	mov byte[cor], marrom	;antenas
+; 	mov ax, 130
+; 	push ax
+; 	mov ax, 270
+; 	push ax
+; 	mov ax, 100
+; 	push ax
+; 	mov ax, 300
+; 	push ax
+; 	call		line
 	
-	mov ax, 130
-	push ax
-	mov ax, 130
-	push ax
-	mov ax, 100
-	push ax
-	mov ax, 100
-	push ax
-	call		line
+; 	mov ax, 130
+; 	push ax
+; 	mov ax, 130
+; 	push ax
+; 	mov ax, 100
+; 	push ax
+; 	mov ax, 100
+; 	push ax
+; 	call		line
 		
-  ; desenha circulos 
-	mov byte[cor], azul	;cabe�a
-	mov ax, 200
-	push ax
-	mov ax, 200
-	push ax
-	mov ax, 100
-	push ax
-	call	circle
+;   ; desenha circulos 
+; 	mov byte[cor], azul	;cabe�a
+; 	mov ax, 200
+; 	push ax
+; 	mov ax, 200
+; 	push ax
+; 	mov ax, 100
+; 	push ax
+; 	call	circle
 
-	mov byte[cor], verde	;corpo
-	mov ax, 450
-	push ax
-	mov ax, 200
-	push ax
-	mov ax, 190
-	push ax
-	call	circle
+; 	mov byte[cor], verde	;corpo
+; 	mov ax, 450
+; 	push ax
+; 	mov ax, 200
+; 	push ax
+; 	mov ax, 190
+; 	push ax
+; 	call	circle
 	
-	mov ax, 100	;circulos das antenas
-	push ax
-	mov ax, 100
-	push ax
-	mov ax, 10
-	push ax
-	call	circle
+; 	mov ax, 100	;circulos das antenas
+; 	push ax
+; 	mov ax, 100
+; 	push ax
+; 	mov ax, 10
+; 	push ax
+; 	call	circle
 	
-	mov ax, 100
-	push ax
-	mov ax, 300
-	push ax
-	mov ax, 10
-	push ax
-	call	circle
+; 	mov ax, 100
+; 	push ax
+; 	mov ax, 300
+; 	push ax
+; 	mov ax, 10
+; 	push ax
+; 	call	circle
 	
-	mov byte[cor], vermelho	;circulos vermelhos
-	mov ax, 500
-	push ax
-	mov ax, 300
-	push ax
-	mov ax, 50
-	push ax
-	call	full_circle
+; 	mov byte[cor], vermelho	;circulos vermelhos
+; 	mov ax, 500
+; 	push ax
+; 	mov ax, 300
+; 	push ax
+; 	mov ax, 50
+; 	push ax
+; 	call	full_circle
 	
-	mov ax, 500
-	push ax
-	mov ax, 100
-	push ax
-	mov ax, 50
-	push ax
-	call	full_circle
+; 	mov ax, 500
+; 	push ax
+; 	mov ax, 100
+; 	push ax
+; 	mov ax, 50
+; 	push ax
+; 	call	full_circle
 	
-	mov ax, 350
-	push ax
-	mov ax, 200
-	push ax
-	mov ax, 50
-	push ax
-	call	full_circle
+; 	mov ax, 350
+; 	push ax
+; 	mov ax, 200
+; 	push ax
+; 	mov ax, 50
+; 	push ax
+; 	call	full_circle
 		
 
-	; escrever uma mensagem
-	mov cx, 14 ; número de caracteres
-	mov bx, 0
-	mov dh, 0	; Linha 0-29
-	mov dl, 30 ; Coluna 0-79
-	mov byte[cor], azul
+; 	; escrever uma mensagem
+; 	mov cx, 14 ; número de caracteres
+; 	mov bx, 0
+; 	mov dh, 0	; Linha 0-29
+; 	mov dl, 30 ; Coluna 0-79
+; 	mov byte[cor], azul
 
-l4:
-	call cursor
-	mov al, [bx+mens]
-	call caracter
-	inc bx ; Proximo caracter
-	inc dl ; Avanca a coluna
-	inc	byte [cor] ; Mudar a cor para a seguinte
-	loop l4
+; l4:
+; 	call cursor
+; 	mov al, [bx+mens]
+; 	call caracter
+; 	inc bx ; Proximo caracter
+; 	inc dl ; Avanca a coluna
+; 	inc	byte [cor] ; Mudar a cor para a seguinte
+; 	loop l4
 
-	mov ah, 0x08
-	int 0x21
-	mov ah, 0 ; Set video mode
-	mov al, [modo_anterior] ; Modo anterior
-	int 0x10
-	mov ax, 0x4c00
-	int 0x21
+; 	mov ah, 0x08
+; 	int 0x21
+; 	mov ah, 0 ; Set video mode
+; 	mov al, [modo_anterior] ; Modo anterior
+; 	int 0x10
+; 	mov ax, 0x4c00
+; 	int 0x21
 ;***************************************************************************
 ;
 ;   fun��o cursor
