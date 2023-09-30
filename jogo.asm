@@ -182,7 +182,7 @@ desenha_tabuleiro:
 
 
 exit:
-  mov ah, 0 ; Set video mode
+  mov ah, 0 ; Seta o modo de vídeo
 	mov al, [modo_anterior] ; Recupera o modo anterior
 	int 10h
 
