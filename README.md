@@ -15,7 +15,7 @@
 - No DOSBox, digitar:
 ```bash
 C:\> mount c /home/{seu_user}/frasm
-C:\> c:
+C:\> c: (caso o : não esteja funcionando, apertar alt + 58 no teclado numérico)
 C:\> Tic-tac-toe-in-assembly-0x86\compile.bat
 ```
 
