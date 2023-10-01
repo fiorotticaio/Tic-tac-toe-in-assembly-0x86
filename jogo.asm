@@ -2,10 +2,10 @@
 ; Matheus Meier Schreiber - ELE15942 05.1N SISTEMAS EMBARCADOS I
 
 
-; Exportando variáveis
-global cor
 ; Importando funções
-extern desenha_tabuleiro
+extern desenha_tabuleiro, le_jogada
+; Exportando variáveis
+global cor, prompt, buffer, tamanho_max_buffer
 
 
 segment codigo
@@ -30,16 +30,21 @@ segment codigo
 
   call desenha_tabuleiro ; Desenha o tabuleiro
 
-  ; Lê um caractere da entrada padrão
-  mov ah, 0x08
-  int 21h ; Só sai dali quando ler algum caractere da entrada padrão
-  jmp exit ; Pula para o fim do programa
+  call le_jogada ; Lê a jogada do usuário
+
+  ; Verifica se a primeira posição do buffer é igual a 's' (sair)
+  mov al, [buffer]
+  cmp al, 's'
+  je exit ; Se não for, pula para o fim do programa
+
+  ; Caso não for s...
+
 
 
 exit:
   mov ah, 0 ; Seta o modo de vídeo
 	mov al, [modo_anterior] ; Recupera o modo anterior
-	int 10h
+	int 0x10
 
   mov ax, 0x4c00 ; Move o valor 0x4c00 para AX (parâmetro que finaliza o programa na inetrrupção 0x21)
   int 0x21 ; Chama a interrupção 0x21
@@ -67,6 +72,10 @@ segment dados
   branco_intens equ 15
 
   modo_anterior	db 0
+
+  prompt db "Digite sua jogada: $"
+  buffer db 0, 0, 0, 0  ; Buffer para armazenar os caracteres das jogadas
+  tamanho_max_buffer equ 4  ; Tamanho máximo do buffer
 
 
 
