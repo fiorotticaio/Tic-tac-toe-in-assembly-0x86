@@ -21,8 +21,13 @@ C:\> Tic-tac-toe-in-assembly-0x86\compile.bat
 
 # Implementações
 - [x] Implementar configuração inicial do tabuleiro.
-- [ ] Implementar comando de jogada (Xlc e Clc).
-- [ ] Implementar os comandos de novo jogo (c) e sair (s).
-- [ ] Implementar identificação de vitória.
+- [x] Implementar os comandos de novo jogo (c) e sair (s).
 - [ ] Implementar prompt de último comando.
+- [ ] Implementar verificação de jogada válida.
 - [ ] Implementar identificação de erros.
+- [ ] Implementar comando de jogada (Xlc e Clc).
+- [ ] Implementar identificação de vitória.
+- [ ] Implementar tecla de BACKSPACE.
+
+# Bugs
+- [ ] Problema com a impressão do prompt.
