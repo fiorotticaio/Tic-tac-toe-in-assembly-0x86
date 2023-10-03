@@ -5,6 +5,7 @@ extern line, cor
 
 
 desenha_tabuleiro:
+  ; Salvando contexto
   pushf
   push ax
   push bx
@@ -154,8 +155,7 @@ desenha_tabuleiro:
   push ax
   call line
 
-
-
+  ; Recuperando o contexto
   pop bp
   pop di
   pop si
