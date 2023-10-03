@@ -18,6 +18,7 @@ segment codigo
   mov ss, ax ; Move o endereço do segmento de pilha para SS
   mov sp, topo_pilha ; Move o endereço do topo da pilha para SP
 
+cria_novo_jogo:
   ; Salvar modo corrente de video (vendo como está o modo de video da maquina)
 	mov ah, 0x0f
 	int 0x10
@@ -30,14 +31,24 @@ segment codigo
 
   call desenha_tabuleiro ; Desenha o tabuleiro
 
+faz_jogada:
   call le_jogada ; Lê a jogada do usuário
 
   ; Verifica se a primeira posição do buffer é igual a 's' (sair)
   mov byte al, [buffer]
   cmp al, 's'
   je exit ; Se não for, pula para o fim do programa
+  
+  ; Verifica se a primeira posição do buffer é igual a 'c' (novo jogo)
+  cmp al, 'c'
+  je cria_novo_jogo ; Se for, pula para o início do programa
 
-  ; Caso não for s...
+  ; TODO: Verifica se a jogada é válida
+  ; TODO: Faz a jogada
+  ; TODO: Verifica se alguem venceu
+
+  jmp faz_jogada ; Continua o jogo
+
 
 
 
