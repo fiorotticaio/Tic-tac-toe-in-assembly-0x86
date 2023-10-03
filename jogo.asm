@@ -50,8 +50,6 @@ faz_jogada:
   jmp faz_jogada ; Continua o jogo
 
 
-
-
 exit:
   mov ah, 0 ; Seta o modo de vídeo
 	mov al, [modo_anterior] ; Recupera o modo anterior
