@@ -5,7 +5,7 @@
 ; Importando funções
 extern desenha_tabuleiro, le_jogada
 ; Exportando variáveis
-global cor, prompt, buffer, tamanho_max_buffer
+global cor, buffer, tamanho_max_buffer
 
 
 segment codigo
@@ -33,7 +33,7 @@ segment codigo
   call le_jogada ; Lê a jogada do usuário
 
   ; Verifica se a primeira posição do buffer é igual a 's' (sair)
-  mov al, [buffer]
+  mov byte al, [buffer]
   cmp al, 's'
   je exit ; Se não for, pula para o fim do programa
 
@@ -73,8 +73,9 @@ segment dados
 
   modo_anterior	db 0
 
-  prompt db "Digite sua jogada: $"
-  buffer db 0, 0, 0, 0  ; Buffer para armazenar os caracteres das jogadas
+  ; FIXME: Promp exibe bom os caracteres tudo bugado
+  ; prompt db "Digite o comando: $", 0 ; 0 no final para indicar o fim da string
+  buffer resb 4  ; Buffer para armazenar os caracteres das jogadas
   tamanho_max_buffer equ 4  ; Tamanho máximo do buffer
 
 
