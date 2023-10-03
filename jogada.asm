@@ -5,6 +5,7 @@ global le_jogada
 
 
 le_jogada:
+  ; Salvando o contexto
   pushf
   push ax
   push bx
@@ -17,14 +18,9 @@ le_jogada:
   ; Configurar posição do cursor
   mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
   mov bh, 0 ; Página de vídeo (normalmente 0)
-  mov dh, 24 ; Posição horizontal (0 a 24, dependendo do modo de vídeo)
-  mov dl, 8 ; Posição vertical (0 a 79, dependendo do modo de vídeo)
+  mov dh, 24 ; Posição vertical (24: chutando e vendo onde fica melhor)
+  mov dl, 8 ; Posição horizontal (8: chutando e vendo onde fica melhor)
   int 0x10 ; Chamada do sistema BIOS
-
-  ; Exibir o prompt na tela
-  ; mov ah, 0x09 ; Função de exibição de string
-  ; mov dx, prompt ; Endereço da mensagem
-  ; int 0x21 ; Chamada do sistema
 
   ; Inicializar contador para tamanho máximo do buffer
   mov cx, tamanho_max_buffer ; Tamanho máximo do buffer determina o loop de leiura de caractere
@@ -48,6 +44,32 @@ le_caractere:
 
 
 terminou_jogada:
+  ; Move o cursor para a direita
+  mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
+  mov bh, 0 ; Página de vídeo (normalmente 0)
+  mov dh, 24 ; Posição vertical (24: chutando e vendo onde fica melhor)
+  mov dl, 45 ; Posição horizontal (45: chutando e vendo onde fica melhor)
+  int 0x10 ; Chamada do sistema BIOS
+
+  ; Exibir os caracteres digitados (comando) na tela
+  mov ah, 02h ; Função de exibição de caractere
+  mov dl, [buffer] ; Caractere a ser exibido
+  int 21h ; Chamada do sistema
+  mov dl, [buffer + 1] ; Caractere a ser exibido
+  int 21h ; Chamada do sistema
+  mov dl, [buffer + 2] ; Caractere a ser exibido
+  int 21h ; Chamada do sistema
+
+  ; Move o cursor para a esquerda de volta
+  mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
+  mov bh, 0 ; Página de vídeo (normalmente 0)
+  mov dh, 24 ; Posição vertical (24: chutando e vendo onde fica melhor)
+  mov dl, 8 ; Posição horizontal (8: chutando e vendo onde fica melhor)
+  int 0x10 ; Chamada do sistema BIOS
+
+  ; TODO: limpar a tela na posição inicial da jogada para o próximo comando
+
+  ; Recuperando o contexto
   pop bp
   pop di
   pop si
