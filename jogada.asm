@@ -1,10 +1,19 @@
 ; Importando variáveis
-extern prompt, buffer, tamanho_max_buffer
+extern buffer, tamanho_max_buffer
 ; Exportando funções
 global le_jogada
 
 
 le_jogada:
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+
   ; Configurar posição do cursor
   mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
   mov bh, 0 ; Página de vídeo (normalmente 0)
@@ -13,9 +22,9 @@ le_jogada:
   int 0x10 ; Chamada do sistema BIOS
 
   ; Exibir o prompt na tela
-  mov ah, 0x09 ; Função de exibição de string
-  mov dx, prompt ; Endereço da mensagem
-  int 0x21 ; Chamada do sistema
+  ; mov ah, 0x09 ; Função de exibição de string
+  ; mov dx, prompt ; Endereço da mensagem
+  ; int 0x21 ; Chamada do sistema
 
   ; Inicializar contador para tamanho máximo do buffer
   mov cx, tamanho_max_buffer ; Tamanho máximo do buffer determina o loop de leiura de caractere
@@ -39,4 +48,13 @@ le_caractere:
 
 
 terminou_jogada:
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
   ret ; Retornar para o programa principal

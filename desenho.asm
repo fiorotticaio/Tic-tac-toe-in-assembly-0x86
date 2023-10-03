@@ -5,6 +5,16 @@ extern line, cor
 
 
 desenha_tabuleiro:
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+
+
   mov	byte[cor], 7 ; Seta a cor da linha para branco
 
   ; Desenha primiera linha horizontal
@@ -144,4 +154,14 @@ desenha_tabuleiro:
   push ax
   call line
 
+
+
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
   ret ; Retorna da função
