@@ -5,14 +5,20 @@ global le_jogada
 
 
 le_jogada:
+  ; Configurar posição do cursor
+  mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
+  mov bh, 0 ; Página de vídeo (normalmente 0)
+  mov dh, 24 ; Posição horizontal (0 a 24, dependendo do modo de vídeo)
+  mov dl, 8 ; Posição vertical (0 a 79, dependendo do modo de vídeo)
+  int 0x10 ; Chamada do sistema BIOS
+
   ; Exibir o prompt na tela
-  ; TODO: colocar na posição certa
   mov ah, 0x09 ; Função de exibição de string
   mov dx, prompt ; Endereço da mensagem
   int 0x21 ; Chamada do sistema
 
   ; Inicializar contador para tamanho máximo do buffer
-  mov cx, tamanho_max_buffer
+  mov cx, tamanho_max_buffer ; Tamanho máximo do buffer determina o loop de leiura de caractere
   xor bx, bx ; Inicializa apontador de caractere no buffer
 
 
