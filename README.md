@@ -21,11 +21,17 @@ C:\> Tic-tac-toe-in-assembly-0x86\compile.bat
 
 # Implementações
 - [x] Implementar configuração inicial do tabuleiro.
+- [x] Adicionar numeração às casas (caracteres)
 - [x] Implementar os comandos de novo jogo (c) e sair (s).
 - [ ] Implementar prompt de último comando.
 - [ ] Implementar verificação de jogada válida.
+  - mesmo jogador nao deve jogar duas vezes seguidas
+  - nao se deve jogar em uma casa já preenchida
 - [ ] Implementar identificação de erros.
-- [ ] Implementar comando de jogada (Xlc e Clc).
+  - caso no campo de simbolo tenha uma letra diferente de `X`, `C`, `c`, ou `s`
+  - caso no campo de coordenada tenha um numero diferente de `1`,`2`,`3`
+  - quando extrapola o tamanho do comando (3 caracteres)
+- [x] Implementar comando de jogada (Xlc e Clc).
 - [ ] Implementar identificação de vitória.
 - [ ] Implementar tecla de BACKSPACE.
 
