@@ -3,9 +3,9 @@
 
 
 ; Importando funções
-extern desenha_tabuleiro, le_jogada
+extern desenha_tabuleiro, le_jogada, computa_jogada
 ; Exportando variáveis
-global cor, buffer, tamanho_max_buffer
+global cor, buffer, tamanho_max_buffer, xc, yc
 
 
 segment codigo
@@ -30,25 +30,7 @@ cria_novo_jogo:
 	int 0x10
 
   call desenha_tabuleiro ; Desenha o tabuleiro
-
-faz_jogada:
-  call le_jogada ; Lê a jogada do usuário
-
-  ; Verifica se a primeira posição do buffer é igual a 's' (sair)
-  mov byte al, [buffer]
-  cmp al, 's'
-  je exit ; Se não for, pula para o fim do programa
-  
-  ; Verifica se a primeira posição do buffer é igual a 'c' (novo jogo)
-  cmp al, 'c'
-  je cria_novo_jogo ; Se for, pula para o início do programa
-
-  ; TODO: Verifica se a jogada é válida
-  ; TODO: Faz a jogada
-  ; TODO: Verifica se alguem venceu
-
-  jmp faz_jogada ; Continua o jogo
-
+  jmp faz_jogada
 
 exit:
   mov ah, 0 ; Seta o modo de vídeo
@@ -58,6 +40,25 @@ exit:
   mov ax, 0x4c00 ; Move o valor 0x4c00 para AX (parâmetro que finaliza o programa na inetrrupção 0x21)
   int 0x21 ; Chama a interrupção 0x21
 
+faz_jogada:
+  call le_jogada ; Lê a jogada do usuário
+
+  ; Verifica se a primeira posição do buffer é igual a 's' (sair)
+  mov byte al, [buffer] 
+  cmp al, 's'
+  je exit ; Se for 's', pula para o fim do programa
+  
+  ; Verifica se a primeira posição do buffer é igual a 'c' (novo jogo)
+  cmp al, 'c'
+  je cria_novo_jogo ; Se for, pula para o início do programa
+
+  ; TODO: Verifica se a jogada é válida
+  
+  call computa_jogada
+
+  ; TODO: Verifica se alguem venceu
+  
+  jmp faz_jogada ; Continua o jogo
 
 
 segment dados
@@ -86,7 +87,9 @@ segment dados
   ; prompt db "Digite o comando: $", 0 ; 0 no final para indicar o fim da string
   buffer resb 4  ; Buffer para armazenar os caracteres das jogadas
   tamanho_max_buffer equ 4  ; Tamanho máximo do buffer
-
+  
+  xc resb 4  ; Posicao x da jogada
+  yc resb 4  ; Posicao y da jogada
 
 
 segment pilha pilha

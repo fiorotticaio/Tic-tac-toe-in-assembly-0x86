@@ -1,5 +1,5 @@
 ; Exportando funções
-global line
+global line, caracter, cursor, circle
 ; Importando variáveis
 extern cor
 

@@ -1,8 +1,7 @@
-; Importando variáveis
-extern buffer, tamanho_max_buffer
-; Exportando funções
-global le_jogada
-
+; Importando variáveis e funções
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc
+; Exportando variáveis e funções funções 
+global le_jogada, computa_jogada, 
 
 le_jogada:
   ; Salvando o contexto
@@ -67,8 +66,164 @@ terminou_jogada:
   mov dl, 8 ; Posição horizontal (8: chutando e vendo onde fica melhor)
   int 0x10 ; Chamada do sistema BIOS
 
-  ; TODO: limpar a tela na posição inicial da jogada para o próximo comando
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
 
+  ret ; Retornar para o programa principal
+
+computa_jogada:
+  ; Salvando o contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+
+  ; Limpando registradores
+  xor al,al
+  xor bl,bl
+  xor cl,cl
+
+  ; Calcula-se a posicao a partir das coordenadas
+  ; coordenadas | calculo de posicao                   |  posicao calculada
+  ; 11 12 13    | (1-1)x3+1=1 (1-1)x3+2=2 (1-1)x3+3=3  |  1 2 3  
+  ; 21 22 23    | (2-1)x3+1=4 (2-1)x3+2=5 (2-1)x3+3=6  |  4 5 6  
+  ; 31 32 33    | (3-1)x3+1=7 (3-1)x3+2=8 (3-1)x3+3=9  |  7 8 9  
+
+  mov byte al, [buffer + 1]
+  sub al, 0x31 ; aqui faz-se [al - (30+1)], usa-se a subtração de 32 para transformar ascii em decimal
+  mov bl, 0x03
+  mul bl
+  mov byte bl, [buffer + 2]
+  sub bl, 0x30
+  add al, bl 
+  mov bl, al ; em bl fica o resultado final da posicao calculada (número em decimal)
+
+  ; Compara se a jogada é na posicao 11
+  cmp bl, 0x01
+  jne jmp_curto_1
+  mov word [xc], 220 ; xc
+  mov word [yc], 400 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_1:
+
+  ; Compara se a jogada é na posicao 12
+  cmp bl, 0x02
+  jne jmp_curto_2
+  mov word [xc], 320 ; xc
+  mov word [yc], 400 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_2:
+
+  ; Compara se a jogada é na posicao 13
+  cmp bl, 0x03
+  jne jmp_curto_3
+  mov word [xc], 420 ; xc
+  mov word [yc], 400 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_3:
+  
+  ; Compara se a jogada é na posicao 21
+  cmp bl, 0x04
+  jne jmp_curto_4
+  mov word [xc], 220 ; xc
+  mov word [yc], 300 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_4:
+
+  ; Compara se a jogada é na posicao 22
+  cmp bl, 0x05
+  jne jmp_curto_5
+  mov word [xc], 320 ; xc
+  mov word [yc], 300 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_5:
+
+  ; Compara se a jogada é na posicao 23
+  cmp bl, 0x06
+  jne jmp_curto_6
+  mov word [xc], 420 ; xc
+  mov word [yc], 300 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_6:
+
+  ; Compara se a jogada é na posicao 31
+  cmp bl, 0x07
+  jne jmp_curto_7
+  mov word [xc], 220 ; xc
+  mov word [yc], 200 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_7:
+
+  ; Compara se a jogada é na posicao 32
+  cmp bl, 0x08
+  jne jmp_curto_8
+  mov word [xc], 320 ; xc
+  mov word [yc], 200 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_8:
+
+  ; Compara se a jogada é na posicao 33
+  cmp bl, 0x09
+  jne jmp_curto_9
+  mov word [xc], 420 ; xc
+  mov word [yc], 200 ; yc
+  call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
+  jmp_curto_9:
+
+  ; Limpando o prompt após a jogada ter sido feita
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 8     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 9     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 10    ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 11    ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+retorno:
   ; Recuperando o contexto
   pop bp
   pop di
