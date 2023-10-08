@@ -17,6 +17,7 @@
 C:\> mount c /home/{seu_user}/frasm
 C:\> c: (caso o : não esteja funcionando, apertar alt + 58 no teclado numérico)
 C:\> Tic-tac-toe-in-assembly-0x86\compile.bat
+C:\> Tic-tac-toe-in-assembly-0x86\jogo.exe
 ```
 
 # Implementações
