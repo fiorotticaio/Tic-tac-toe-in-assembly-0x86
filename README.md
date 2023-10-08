@@ -35,4 +35,4 @@ C:\> Tic-tac-toe-in-assembly-0x86\compile.bat
 - [ ] Implementar tecla de BACKSPACE.
 
 # Bugs
-- [ ] Problema com a impressão do prompt.
+- [ ] Problema com a impressão do prompt de jogada

@@ -89,7 +89,7 @@ segment dados
   modo_anterior	db 0
 
   ; FIXME: Promp exibe bom os caracteres tudo bugado
-  ; prompt db "Digite o comando: $", 0 ; 0 no final para indicar o fim da string
+  ; prompt db "Digite a jogada: $", 0 ; 0 no final para indicar o fim da string
   buffer resb 10             ; Buffer para armazenar os caracteres das jogadas
   tamanho_max_buffer equ 10  ; Tamanho máximo do buffer
   tamanho_jogada resb 2      ; Guarda o tamanho da jogada digitada
