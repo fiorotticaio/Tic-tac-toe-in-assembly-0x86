@@ -11,14 +11,14 @@ global cor, buffer, tamanho_max_buffer, xc, yc, rtn
 segment codigo
 ..start:
   ; Inicialização dos registradores de segmento e stack pointer 
-  xor ax, ax ; Limpa AX
-  mov ax, dados ; Move o endereço do segmento de dados para AX
-  mov ds, ax ; Move o endereço do segmento de dados para DS
-  mov ax, pilha ; Move o endereço do segmento de pilha para AX
-  mov ss, ax ; Move o endereço do segmento de pilha para SS
+  xor bx, bx         ; Limpa BX
+  xor ax, ax         ; Limpa AX
+  mov ax, dados      ; Move o endereço do segmento de dados para AX
+  mov ds, ax         ; Move o endereço do segmento de dados para DS
+  mov ax, pilha      ; Move o endereço do segmento de pilha para AX
+  mov ss, ax         ; Move o endereço do segmento de pilha para SS
   mov sp, topo_pilha ; Move o endereço do topo da pilha para SP
 
-  xor bx, bx
 
 cria_novo_jogo:
   ; Salvar modo corrente de video (vendo como está o modo de video da maquina)
@@ -35,12 +35,12 @@ cria_novo_jogo:
   jmp faz_jogada
 
 exit:
-  mov ah, 0 ; Seta o modo de vídeo
+  mov ah, 0               ; Seta o modo de vídeo
 	mov al, [modo_anterior] ; Recupera o modo anterior
 	int 0x10
 
   mov ax, 0x4c00 ; Move o valor 0x4c00 para AX (parâmetro que finaliza o programa na inetrrupção 0x21)
-  int 0x21 ; Chama a interrupção 0x21
+  int 0x21       ; Chama a interrupção 0x21
 
 faz_jogada:
   call le_jogada ; Lê a jogada do usuário
@@ -55,9 +55,9 @@ faz_jogada:
   je cria_novo_jogo ; Se for, pula para o início do programa
 
   call verifica_jogada_valida ; Verifica se a jogada é válida
-  mov byte bl, [rtn] ; Move o retorno da função para BL
-  cmp bl, 0 ; Se a jogada for inválida, faz outra jogada
-  je faz_jogada
+  mov byte bl, [rtn]          ; Move o retorno da função para BL
+  cmp bl, 0                   ; Comparação para ver se a jogada é válida
+  je faz_jogada               ; Se a jogada for inválida, faz outra jogada
 
   call computa_jogada
 
@@ -90,7 +90,7 @@ segment dados
 
   ; FIXME: Promp exibe bom os caracteres tudo bugado
   ; prompt db "Digite o comando: $", 0 ; 0 no final para indicar o fim da string
-  buffer resb 4  ; Buffer para armazenar os caracteres das jogadas
+  buffer resb 4             ; Buffer para armazenar os caracteres das jogadas
   tamanho_max_buffer equ 4  ; Tamanho máximo do buffer
   
   xc resb 4  ; Posicao x da jogada
