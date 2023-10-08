@@ -5,7 +5,7 @@
 ; Importando funções
 extern desenha_tabuleiro, le_jogada, computa_jogada, verifica_jogada_valida
 ; Exportando variáveis
-global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_jogada_invalida
+global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_jogada_invalida, prompt_vazio
 
 
 segment codigo
@@ -98,7 +98,8 @@ segment dados
 
   rtn resb 1  ; Retorno de função
 
-  prompt_jogada_invalida db "Jogada invalida!$", 0
+  prompt_jogada_invalida db "Jogada invalida$", 0
+  prompt_vazio db "               $", 0
 
 
 segment pilha pilha

@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida, limpa_prompt_erro
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -304,7 +304,19 @@ segundo_caractere_valido:
 
 terceiro_caractere_valido:
   ; Se chegou até aqui, a jogada é válida
-  mov byte [rtn], 1 ; Retorna 1
-  jmp retorno
+  call limpa_prompt_erro ; Limpa o prompt de erro
+  mov byte [rtn], 1      ; Retorna 1
+  
   ; TODO: Verificar se a posição no tabuleiro já está ocupada
 
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornar para o programa principal
