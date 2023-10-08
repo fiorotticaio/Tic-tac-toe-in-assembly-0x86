@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -270,8 +270,8 @@ verifica_jogada_valida:
   cmp al, 0x43                 ; Comparar com C
   je primeiro_caractere_valido ; Se for C, pula para o próximo teste
 
-  mov byte [rtn], 0 ; Se não for X ou C, retorna 0
-  ; call imprime_erro_jogada_invalida ; Se não for X ou C, imprime erro e retorna
+  mov byte [rtn], 0                 ; Se não for X ou C, retorna 0
+  call imprime_erro_jogada_invalida ; Se não for X ou C, imprime erro e retorna
   jmp retorno
 
 primeiro_caractere_valido:
@@ -284,8 +284,8 @@ primeiro_caractere_valido:
   cmp al, 0x33                ; Comparar com 3
   je segundo_caractere_valido ; Se for 3, pula para o próximo teste
 
-  mov byte [rtn], 0 ; Se não for X ou C, retorna 0
-  ; call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
+  mov byte [rtn], 0                 ; Se não for 1, 2 ou 3, retorna 0
+  call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
   jmp retorno
 
 segundo_caractere_valido:
@@ -298,8 +298,8 @@ segundo_caractere_valido:
   cmp al, 0x33                 ; Comparar com 3
   je terceiro_caractere_valido ; Se for 3, pula para o próximo teste
 
-  mov byte [rtn], 0 ; Se não for X ou C, retorna 0
-  ; call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
+  mov byte [rtn], 0                 ; Se não for 1, 2 ou 3, retorna 0
+  call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
   jmp retorno
 
 terceiro_caractere_valido:
