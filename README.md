@@ -25,11 +25,10 @@ C:\> Tic-tac-toe-in-assembly-0x86\compile.bat
 - [x] Implementar os comandos de novo jogo (c) e sair (s).
 - [x] Implementar prompt de último comando.
 - [x] Implementar comando de jogada (Xlc e Clc).
-- [ ] Implementar identificação de erros.
+- [ ] Implementar validação de jogada
   - [x] caso no campo de simbolo tenha uma letra diferente de `X`, `C`, `c`, ou `s`
   - [x] caso no campo de coordenada tenha um numero diferente de `1`,`2`,`3`
-  - [ ] quando extrapola o tamanho do comando (3 caracteres)
-- [ ] Implementar verificação de jogada válida.
+  - [x] quando extrapola o tamanho do comando (3 caracteres)
   - [ ] mesmo jogador nao deve jogar duas vezes seguidas
   - [ ] nao se deve jogar em uma casa já preenchida
 - [ ] Implementar identificação de vitória.
