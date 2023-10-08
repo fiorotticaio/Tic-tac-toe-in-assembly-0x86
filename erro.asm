@@ -63,7 +63,7 @@ limpa_prompt_erro:
   mov dl, 8     ; Posição horizontal 
   int 0x10      ; Chamada do sistema BIOS
 
-  mov dx, prompt_vazio ; Caractere de 'branco' para limpar o prompt
+  mov dx, prompt_vazio ; String vazia para limpar o prompt
   mov ah, 9            ; Função de exibição de caractere
   int 21h              ; Chamada do sistema
 

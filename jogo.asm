@@ -5,7 +5,7 @@
 ; Importando funções
 extern desenha_tabuleiro, le_jogada, computa_jogada, verifica_jogada_valida
 ; Exportando variáveis
-global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_jogada_invalida, prompt_vazio
+global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_jogada_invalida, prompt_vazio, tamanho_jogada
 
 
 segment codigo
@@ -90,8 +90,9 @@ segment dados
 
   ; FIXME: Promp exibe bom os caracteres tudo bugado
   ; prompt db "Digite o comando: $", 0 ; 0 no final para indicar o fim da string
-  buffer resb 4             ; Buffer para armazenar os caracteres das jogadas
-  tamanho_max_buffer equ 4  ; Tamanho máximo do buffer
+  buffer resb 10             ; Buffer para armazenar os caracteres das jogadas
+  tamanho_max_buffer equ 10  ; Tamanho máximo do buffer
+  tamanho_jogada resb 2      ; Guarda o tamanho da jogada digitada
   
   xc resb 4  ; Posicao x da jogada
   yc resb 4  ; Posicao y da jogada

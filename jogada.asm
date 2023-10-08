@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida, limpa_prompt_erro
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -20,46 +20,24 @@ le_jogada:
   push bp
 
   ; Limpando o prompt antes da jogada ser feita
+  mov cx, tamanho_max_buffer ; Loop para limpar o prompt
+  xor bx, bx                 ; Zera apontador do prompt
+  mov bl, 8                  ; Inicializa apontador do prompt
 
+limpa_prompt_leitura:
   mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
   mov bh, 0     ; Página de vídeo (normalmente 0)
   mov dh, 24    ; Posição vertical
-  mov dl, 8     ; Posição horizontal 
+  mov dl, bl    ; Posição horizontal 
   int 0x10      ; Chamada do sistema BIOS
 
   mov ah, 02h   ; Função de exibição de caractere
   mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
   int 21h       ; Chamada do sistema
 
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 9     ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
+  inc bl        ; Avançar para a próxima posição
 
-  mov ah, 02h   ; Função de exibição de caractere
-  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
-  int 21h       ; Chamada do sistema
-
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 10    ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
-
-  mov ah, 02h   ; Função de exibição de caractere
-  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
-  int 21h       ; Chamada do sistema
-
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 11    ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
-
-  mov ah, 02h   ; Função de exibição de caractere
-  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
-  int 21h       ; Chamada do sistema
+  loop limpa_prompt_leitura ; Decrementar o contador de tamanho máximo do buffer
 
 
   ; Configurar posição do cursor pra leitura da jogada
@@ -97,14 +75,29 @@ terminou_jogada:
   mov dl, 45   ; Posição horizontal (45: chutando e vendo onde fica melhor)
   int 0x10     ; Chamada do sistema BIOS
 
-  ; Exibir os caracteres digitados (comando) na tela
-  mov ah, 02h          ; Função de exibição de caractere
-  mov dl, [buffer]     ; Caractere a ser exibido
+  ; Limpa a impressão da jogada anterior antes
+  mov dx, prompt_vazio ; String vazia para limpar o prompt
+  mov ah, 9            ; Função de exibição de caractere
   int 21h              ; Chamada do sistema
-  mov dl, [buffer + 1] ; Caractere a ser exibido
-  int 21h              ; Chamada do sistema
-  mov dl, [buffer + 2] ; Caractere a ser exibido
-  int 21h              ; Chamada do sistema
+
+  mov [tamanho_jogada], bx ; Armazena o tamanho da jogada para futura verificação
+  mov cx, bx               ; Inicializa contador com o tamanho do buffer
+  xor bx, bx               ; Inicializa apontador de caractere no buffer
+
+  ; Move o cursor para a direita de novo
+  mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
+  mov bh, 0    ; Página de vídeo (normalmente 0)
+  mov dh, 24   ; Posição vertical (24: chutando e vendo onde fica melhor)
+  mov dl, 45   ; Posição horizontal (45: chutando e vendo onde fica melhor)
+  int 0x10     ; Chamada do sistema BIOS
+
+
+exibe_caracteres_digitados:
+  mov ah, 02h           ; Função de exibição de caractere
+  mov dl, [buffer + bx] ; Caractere a ser exibido
+  int 21h               ; Chamada do sistema
+  inc bx                ; Avançar para o próximo caractere no buffer
+  loop exibe_caracteres_digitados
 
   ; Move o cursor para a esquerda de volta
   mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
@@ -263,6 +256,15 @@ verifica_jogada_valida:
   push di
   push bp
 
+  ; Verifica se foram digitados apenas 3 caracteres
+  mov ax, [tamanho_jogada]          ; AX recebe o tamanho da jogada
+  cmp ax, 0x03                      ; Comparar com 3
+  je tamanho_jogada_valido          ; Se for 3, vai pras proximas validações
+  call imprime_erro_jogada_invalida ; Se não for 3, imprime erro antes
+  mov byte [rtn], 0                 ; Se não for 3, retorna 0
+  jmp retorno
+
+tamanho_jogada_valido
   ; Verifica se o primeiro caractere é X ou C
   mov al, [buffer]             ; AL recebe o primeiro caractere da jogada
   cmp al, 0x58                 ; Comparar com X
