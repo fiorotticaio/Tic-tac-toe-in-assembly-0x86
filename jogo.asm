@@ -96,7 +96,7 @@ segment dados
   xc resb 4  ; Posicao x da jogada
   yc resb 4  ; Posicao y da jogada
 
-  rtn resb 1  ; Retorno da função
+  rtn resb 1  ; Retorno de função
 
 
 segment pilha pilha
