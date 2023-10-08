@@ -4,4 +4,4 @@ nasm16 -f obj -o projeto\jogo.obj -l projeto\jogo.lst projeto\jogo.asm
 nasm16 -f obj -o projeto\desenho.obj -l projeto\desenho.lst projeto\desenho.asm
 nasm16 -f obj -o projeto\jogada.obj -l projeto\jogada.lst projeto\jogada.asm
 freelink projeto\jogo projeto\linec projeto\desenho projeto\jogada
-projeto\jogo.exe
+@REM projeto\jogo.exe

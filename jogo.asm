@@ -3,9 +3,9 @@
 
 
 ; Importando funções
-extern desenha_tabuleiro, le_jogada, computa_jogada
+extern desenha_tabuleiro, le_jogada, computa_jogada, verifica_jogada_valida
 ; Exportando variáveis
-global cor, buffer, tamanho_max_buffer, xc, yc
+global cor, buffer, tamanho_max_buffer, xc, yc, rtn
 
 
 segment codigo
@@ -17,6 +17,8 @@ segment codigo
   mov ax, pilha ; Move o endereço do segmento de pilha para AX
   mov ss, ax ; Move o endereço do segmento de pilha para SS
   mov sp, topo_pilha ; Move o endereço do topo da pilha para SP
+
+  xor bx, bx
 
 cria_novo_jogo:
   ; Salvar modo corrente de video (vendo como está o modo de video da maquina)
@@ -52,8 +54,11 @@ faz_jogada:
   cmp al, 'c'
   je cria_novo_jogo ; Se for, pula para o início do programa
 
-  ; TODO: Verifica se a jogada é válida
-  
+  call verifica_jogada_valida ; Verifica se a jogada é válida
+  mov byte bl, [rtn] ; Move o retorno da função para BL
+  cmp bl, 0 ; Se a jogada for inválida, faz outra jogada
+  je faz_jogada
+
   call computa_jogada
 
   ; TODO: Verifica se alguem venceu
@@ -90,6 +95,8 @@ segment dados
   
   xc resb 4  ; Posicao x da jogada
   yc resb 4  ; Posicao y da jogada
+
+  rtn resb 1  ; Retorno da função
 
 
 segment pilha pilha

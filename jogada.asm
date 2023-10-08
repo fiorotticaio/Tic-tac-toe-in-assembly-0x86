@@ -1,7 +1,7 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn
 ; Exportando variáveis e funções funções 
-global le_jogada, computa_jogada, 
+global le_jogada, computa_jogada, verifica_jogada_valida
 
 le_jogada:
   ; Salvando o contexto
@@ -14,7 +14,50 @@ le_jogada:
   push di
   push bp
 
-  ; Configurar posição do cursor
+  ; Limpando o prompt antes da jogada ter sido feita
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 8     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 9     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 10    ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 24    ; Posição vertical
+  mov dl, 11    ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  mov ah, 02h   ; Função de exibição de caractere
+  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
+  int 21h       ; Chamada do sistema
+
+
+  ; Configurar posição do cursor pra leitura da jogada
   mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
   mov bh, 0 ; Página de vídeo (normalmente 0)
   mov dh, 24 ; Posição vertical (24: chutando e vendo onde fica melhor)
@@ -77,6 +120,8 @@ terminou_jogada:
   popf
 
   ret ; Retornar para o programa principal
+
+
 
 computa_jogada:
   ; Salvando o contexto
@@ -181,47 +226,6 @@ computa_jogada:
   call desenha_jogada ; chamando funcao de desenhar jogada com parametros: xc, yc, caractere
   jmp_curto_9:
 
-  ; Limpando o prompt após a jogada ter sido feita
-
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 8     ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
-
-  mov ah, 02h   ; Função de exibição de caractere
-  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
-  int 21h       ; Chamada do sistema
-
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 9     ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
-
-  mov ah, 02h   ; Função de exibição de caractere
-  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
-  int 21h       ; Chamada do sistema
-
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 10    ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
-
-  mov ah, 02h   ; Função de exibição de caractere
-  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
-  int 21h       ; Chamada do sistema
-
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 11    ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
-
-  mov ah, 02h   ; Função de exibição de caractere
-  mov dl, 0x20  ; Caractere de 'branco' para limpar o prompt
-  int 21h       ; Chamada do sistema
 
 retorno:
   ; Recuperando o contexto
@@ -235,3 +239,62 @@ retorno:
   popf
 
   ret ; Retornar para o programa principal
+
+
+
+verifica_jogada_valida:
+  ; Salvando o contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+
+  ; Verifica se o primeiro caractere é X ou C
+  mov al, [buffer] ; AL recebe o primeiro caractere da jogada
+  cmp al, 0x58 ; Comparar com X
+  je primeiro_caractere_valido ; Se for X, pula para o próximo teste
+  cmp al, 0x43 ; Comparar com C
+  je primeiro_caractere_valido ; Se for C, pula para o próximo teste
+
+  mov byte [rtn], 0 ; Se não for X ou C, retorna 0
+  ; call imprime_erro_jogada_invalida ; Se não for X ou C, imprime erro e retorna
+  jmp retorno
+
+primeiro_caractere_valido:
+  ; Verifica se o segundo caractere é 1, 2 ou 3
+  mov al, [buffer + 1] ; AL recebe o segundo caractere da jogada
+  cmp al, 0x31 ; Comparar com 1
+  je segundo_caractere_valido ; Se for 1, pula para o próximo teste
+  cmp al, 0x32 ; Comparar com 2
+  je segundo_caractere_valido ; Se for 2, pula para o próximo teste
+  cmp al, 0x33 ; Comparar com 3
+  je segundo_caractere_valido ; Se for 3, pula para o próximo teste
+
+  mov byte [rtn], 0 ; Se não for X ou C, retorna 0
+  ; call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
+  jmp retorno
+
+segundo_caractere_valido:
+  ; Verifica se o terceiro caractere é 1, 2 ou 3
+  mov al, [buffer + 2] ; AL recebe o terceiro caractere da jogada
+  cmp al, 0x31 ; Comparar com 1
+  je terceiro_caractere_valido ; Se for 1, pula para o próximo teste
+  cmp al, 0x32 ; Comparar com 2
+  je terceiro_caractere_valido ; Se for 2, pula para o próximo teste
+  cmp al, 0x33 ; Comparar com 3
+  je terceiro_caractere_valido ; Se for 3, pula para o próximo teste
+
+  mov byte [rtn], 0 ; Se não for X ou C, retorna 0
+  ; call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
+  jmp retorno
+
+terceiro_caractere_valido:
+  ; Se chegou até aqui, a jogada é válida
+  mov byte [rtn], 1 ; Retorna 1
+  jmp retorno
+  ; TODO: Verificar se a posição no tabuleiro já está ocupada
+
