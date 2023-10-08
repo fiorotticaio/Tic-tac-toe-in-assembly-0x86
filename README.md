@@ -23,7 +23,7 @@ C:\> Tic-tac-toe-in-assembly-0x86\compile.bat
 - [x] Implementar configuração inicial do tabuleiro.
 - [x] Adicionar numeração às casas (caracteres)
 - [x] Implementar os comandos de novo jogo (c) e sair (s).
-- [ ] Implementar prompt de último comando.
+- [x] Implementar prompt de último comando.
 - [ ] Implementar verificação de jogada válida.
   - mesmo jogador nao deve jogar duas vezes seguidas
   - nao se deve jogar em uma casa já preenchida
