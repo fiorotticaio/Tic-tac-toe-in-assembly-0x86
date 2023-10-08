@@ -1,6 +1,13 @@
+; Importando variáveis e funções
 extern prompt_jogada_invalida, prompt_vazio
+; Exportando variáveis e funções funções 
 global imprime_erro_jogada_invalida, limpa_prompt_erro
 
+
+
+; ******************************************************************************
+; Função imprime_erro_jogada_invalida
+; ******************************************************************************
 imprime_erro_jogada_invalida:
   ; Salvando o contexto
   pushf
@@ -36,6 +43,9 @@ imprime_erro_jogada_invalida:
 
 
 
+; ******************************************************************************
+; Função limpa_prompt_erro
+; ******************************************************************************
 limpa_prompt_erro:
   ; Salvando o contexto
   pushf
