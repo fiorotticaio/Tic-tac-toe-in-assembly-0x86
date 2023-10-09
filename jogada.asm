@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio,
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -57,6 +57,10 @@ le_caractere:
   mov ah, 0x01 ; Função de leitura de caractere
   int 21h      ; Chamada do sistema
 
+  ; Verifica se foi pressionado BACKSPACE
+  cmp al, 0x08   ; Comparar com BACKSPACE (0x08)
+  je backspace   ; Se for BACKSPCE, apaga o caracter atual e volta um no cursor
+  
   ; Verifica se foi pressionado ENTER
   cmp al, 0x0d       ; Comparar com ENTER (0x0d)
   je terminou_jogada ; Se for ENTER, termina a jogada
@@ -64,8 +68,27 @@ le_caractere:
   mov [buffer + bx], al ; Armazenar o caractere lido no buffer
   inc bx                ; Avançar para o próximo caractere no buffer
 
+proximo_caractere:
   loop le_caractere ; Decrementar o contador de tamanho máximo do buffer
 
+backspace:
+  mov ah, 02h  ; Função de exibição de caractere
+  mov dl, 0x20 ; Caractere de 'branco' para limpar o prompt
+  int 21h      ; Chamada do sistema
+  
+  cmp bx, 0x0  ; Verifica se ainda da pra apagar
+  je proximo_caractere
+
+  dec bx       ; Decrementa o contador do cursor
+
+  mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
+  mov bh, 0    ; Página de vídeo (normalmente 0)
+  mov dh, 24   ; Posição vertical (24: chutando e vendo onde fica melhor)
+  mov dl, 8   ; Posição horizontal (45: chutando e vendo onde fica melhor)
+  add dl, bl   ; Volta o cursor uma unidade p esquerda
+  int 0x10     ; Chamada do sistema BIOS
+
+  jmp proximo_caractere
 
 terminou_jogada:
   ; Move o cursor para a direita
@@ -146,7 +169,7 @@ computa_jogada:
   ; 31 32 33    | (3-1)x3+1=7 (3-1)x3+2=8 (3-1)x3+3=9  |  7 8 9  
 
   mov byte al, [buffer + 1]
-  sub al, 0x31 ; aqui faz-se [al - (30+1)], usa-se a subtração de 32 para transformar ascii em decimal
+  sub al, 0x31 ; aqui faz-se [al - (30+1)], a subtração de 30 é para transformar ascii em decimal
   mov bl, 0x03
   mul bl
   mov byte bl, [buffer + 2]
