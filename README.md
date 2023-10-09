@@ -33,7 +33,7 @@ C:\> Tic-tac-toe-in-assembly-0x86\jogo.exe
   - [ ] mesmo jogador nao deve jogar duas vezes seguidas
   - [ ] nao se deve jogar em uma casa já preenchida
 - [ ] Implementar identificação de vitória.
-- [ ] Implementar tecla de BACKSPACE.
+- [x] Implementar tecla de BACKSPACE.
 
 # Bugs
 - [ ] Problema com a impressão do prompt de jogada
