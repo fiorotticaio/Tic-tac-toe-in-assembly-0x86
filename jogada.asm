@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio,
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio,
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -283,7 +283,7 @@ verifica_jogada_valida:
   mov ax, [tamanho_jogada]          ; AX recebe o tamanho da jogada
   cmp ax, 0x03                      ; Comparar com 3
   je tamanho_jogada_valido          ; Se for 3, vai pras proximas validações
-  call imprime_erro_jogada_invalida ; Se não for 3, imprime erro antes
+  call imprime_erro_comando_invalido ; Se não for 3, imprime erro antes
   mov byte [rtn], 0                 ; Se não for 3, retorna 0
   jmp retorno
 
@@ -296,7 +296,7 @@ tamanho_jogada_valido
   je primeiro_caractere_valido ; Se for C, pula para o próximo teste
 
   mov byte [rtn], 0                 ; Se não for X ou C, retorna 0
-  call imprime_erro_jogada_invalida ; Se não for X ou C, imprime erro e retorna
+  call imprime_erro_comando_invalido ; Se não for X ou C, imprime erro e retorna
   jmp retorno
 
 primeiro_caractere_valido:
@@ -310,7 +310,7 @@ primeiro_caractere_valido:
   je segundo_caractere_valido ; Se for 3, pula para o próximo teste
 
   mov byte [rtn], 0                 ; Se não for 1, 2 ou 3, retorna 0
-  call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
+  call imprime_erro_comando_invalido ; Se não for 1, 2 ou 3, imprime erro e retorna
   jmp retorno
 
 segundo_caractere_valido:
@@ -324,7 +324,7 @@ segundo_caractere_valido:
   je terceiro_caractere_valido ; Se for 3, pula para o próximo teste
 
   mov byte [rtn], 0                 ; Se não for 1, 2 ou 3, retorna 0
-  call imprime_erro_jogada_invalida ; Se não for 1, 2 ou 3, imprime erro e retorna
+  call imprime_erro_comando_invalido ; Se não for 1, 2 ou 3, imprime erro e retorna
   jmp retorno
 
 terceiro_caractere_valido:
