@@ -25,6 +25,15 @@ imprime_erro_comando_invalido:
   mov dl, 8     ; Posição horizontal 
   int 0x10      ; Chamada do sistema BIOS
 
+  call limpa_prompt_erro ; Limpa o prompt de erro antes de imprimir qualquer coisa
+
+  ; Volta o cursor para o lugar
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 27    ; Posição vertical
+  mov dl, 8     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
   mov dx, prompt_comando_invalido
   mov ah, 9
   int 21h
@@ -57,6 +66,15 @@ imprime_erro_jogada_invalida:
   push di
   push bp
 
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 27    ; Posição vertical
+  mov dl, 8     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  call limpa_prompt_erro ; Limpa o prompt de erro antes de imprimir qualquer coisa
+
+  ; Volta o cursor para o lugar
   mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
   mov bh, 0     ; Página de vídeo (normalmente 0)
   mov dh, 27    ; Posição vertical

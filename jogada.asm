@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio,
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio, jogador_da_vez
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -280,11 +280,11 @@ verifica_jogada_valida:
   push bp
 
   ; Verifica se foram digitados apenas 3 caracteres
-  mov ax, [tamanho_jogada]          ; AX recebe o tamanho da jogada
-  cmp ax, 0x03                      ; Comparar com 3
-  je tamanho_jogada_valido          ; Se for 3, vai pras proximas validações
+  mov ax, [tamanho_jogada]           ; AX recebe o tamanho da jogada
+  cmp ax, 0x03                       ; Comparar com 3
+  je tamanho_jogada_valido           ; Se for 3, vai pras proximas validações
   call imprime_erro_comando_invalido ; Se não for 3, imprime erro antes
-  mov byte [rtn], 0                 ; Se não for 3, retorna 0
+  mov byte [rtn], 0                  ; Se não for 3, retorna 0
   jmp retorno
 
 tamanho_jogada_valido
@@ -295,7 +295,7 @@ tamanho_jogada_valido
   cmp al, 0x43                 ; Comparar com C
   je primeiro_caractere_valido ; Se for C, pula para o próximo teste
 
-  mov byte [rtn], 0                 ; Se não for X ou C, retorna 0
+  mov byte [rtn], 0                  ; Se não for X ou C, retorna 0
   call imprime_erro_comando_invalido ; Se não for X ou C, imprime erro e retorna
   jmp retorno
 
@@ -323,17 +323,48 @@ segundo_caractere_valido:
   cmp al, 0x33                 ; Comparar com 3
   je terceiro_caractere_valido ; Se for 3, pula para o próximo teste
 
-  mov byte [rtn], 0                 ; Se não for 1, 2 ou 3, retorna 0
+  mov byte [rtn], 0                  ; Se não for 1, 2 ou 3, retorna 0
   call imprime_erro_comando_invalido ; Se não for 1, 2 ou 3, imprime erro e retorna
   jmp retorno
 
-terceiro_caractere_valido:
-  ; Se chegou até aqui, a jogada é válida
+terceiro_caractere_valido: ; Se chegou até aqui, o comando é válido
+  ; Verifica se é a vez do jogador da jogada
+  mov al, [buffer]        ; AL recebe o primeiro caractere da jogada
+  cmp al, 0x58            ; Comparar com X
+  je primeiro_caractere_x ; Se for X, pula para o próximo teste
+
+  cmp al, 0x43            ; Comparar com C
+  je primeiro_caractere_c ; Se for C, pula para o próximo teste
+
+primeiro_caractere_x: ; Verifica se é a vez de X
+  mov bl, [jogador_da_vez] ; BL recebe o jogador da vez
+  cmp bl, 0                ; Comparar com 0 - jogador X
+  je jogada_valida         ; Se for a vez do jogador X, a jogada é válida 
+
+  mov byte [rtn], 0                 ; Se não for a vez do jogador X, retorna 0
+  call imprime_erro_jogada_invalida ; Se não for a vez do jogador X, imprime erro e retorna
+  jmp retorno                       
+
+primeiro_caractere_c: ; Verifica se é a vez de C
+  mov bl, [jogador_da_vez] ; BL recebe o jogador da vez
+  cmp bl, 1                ; Comparar com 1 - jogador C
+  je jogada_valida         ; Se for a vez do jogador C, a jogada é válida
+
+  mov byte [rtn], 0                 ; Se não for a vez do jogador C, retorna 0
+  call imprime_erro_jogada_invalida ; Se não for a vez do jogador C, imprime erro e retorna
+  jmp retorno
+
+; TODO: Verificar se a posição no tabuleiro já está ocupada
+
+jogada_valida:
+  ; Faz o toggle da variável jogador_da_vez (passa a vez pro próximo jogador)
+  mov bl, [jogador_da_vez] ; BL recebe o jogador da vez
+  xor bl, 0x01             ; Faz o toggle do jogador da vez
+  mov [jogador_da_vez], bl ; Atualiza o jogador da vez
+
   call limpa_prompt_erro ; Limpa o prompt de erro
   mov byte [rtn], 1      ; Retorna 1
   
-  ; TODO: Verificar se a posição no tabuleiro já está ocupada
-
   ; Recuperando o contexto
   pop bp
   pop di
