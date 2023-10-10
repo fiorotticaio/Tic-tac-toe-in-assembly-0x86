@@ -26,14 +26,14 @@ C:\> Tic-tac-toe-in-assembly-0x86\jogo.exe
 - [x] Implementar os comandos de novo jogo (c) e sair (s).
 - [x] Implementar prompt de último comando.
 - [x] Implementar comando de jogada (Xlc e Clc).
+- [x] Implementar tecla de BACKSPACE.
 - [ ] Implementar validação de jogada
   - [x] caso no campo de simbolo tenha uma letra diferente de `X`, `C`, `c`, ou `s`
   - [x] caso no campo de coordenada tenha um numero diferente de `1`,`2`,`3`
   - [x] quando extrapola o tamanho do comando (3 caracteres)
-  - [ ] mesmo jogador nao deve jogar duas vezes seguidas
+  - [x] mesmo jogador nao deve jogar duas vezes seguidas
   - [ ] nao se deve jogar em uma casa já preenchida
 - [ ] Implementar identificação de vitória.
-- [x] Implementar tecla de BACKSPACE.
 
 # Bugs
 - [ ] Problema com a impressão do prompt de jogada
