@@ -111,7 +111,7 @@ segment dados
 
   jogador_da_vez db 0 ; 0 para o jogador X e 1 para o jogador C
 
-  posicoes_do_tabuleiro resb 2 ; Posições do tabuleiro
+  posicoes_do_tabuleiro resb 2 ; Cada bit representa uma posição (8 bits do primeiro byte + 1 bit do segundo)
   
 
 

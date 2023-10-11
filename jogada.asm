@@ -381,7 +381,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_11
   ; Verifica se a posicao 11 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x01
+  and dx, 0x01 ; 0000 0001
   cmp dx, 0x01
   jne marca_posicao_11
   jmp posicao_ocupada
@@ -398,12 +398,12 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_22
   ; Verifica se a posicao 12 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x02
+  and dx, 0x02 ; 0000 0010
   cmp dx, 0x02
   jne marca_posicao_12
   jmp posicao_ocupada
-  marca_posicao_12:
   ; Marca a posicao 12 como jogada
+  marca_posicao_12:
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x02
   mov [posicoes_do_tabuleiro], dx
@@ -415,7 +415,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_33
   ; Verifica se a posicao 13 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x04
+  and dx, 0x04 ; 0000 0100
   cmp dx, 0x04
   jne marca_posicao_13
   jmp posicao_ocupada
@@ -432,7 +432,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_44
   ; Verifica se a posicao 21 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x08
+  and dx, 0x08 ; 0000 1000
   cmp dx, 0x08
   jne marca_posicao_21
   jmp posicao_ocupada
@@ -449,7 +449,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_55
   ; Verifica se a posicao 22 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x10
+  and dx, 0x10 ; 0001 0000
   cmp dx, 0x10
   jne marca_posicao_22
   jmp posicao_ocupada
@@ -466,7 +466,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_66
   ; Verifica se a posicao 23 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x20
+  and dx, 0x20 ; 0010 0000
   cmp dx, 0x20
   jne marca_posicao_23
   jmp posicao_ocupada
@@ -483,7 +483,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_77
   ; Verifica se a posicao 31 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x40
+  and dx, 0x40 ; 0100 0000
   cmp dx, 0x40
   jne marca_posicao_31
   jmp posicao_ocupada
@@ -500,7 +500,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_88
   ; Verifica se a posicao 32 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x80
+  and dx, 0x80 ; 1000 0000
   cmp dx, 0x80
   jne marca_posicao_32
   jmp posicao_ocupada
@@ -517,7 +517,7 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jne jmp_curto_99
   ; Verifica se a posicao 33 já foi jogada
   mov dx, [posicoes_do_tabuleiro]
-  and dx, 0x100
+  and dx, 0x100 ; 0001 0000 0000
   cmp dx, 0x100
   jne marca_posicao_33
   jmp posicao_ocupada
