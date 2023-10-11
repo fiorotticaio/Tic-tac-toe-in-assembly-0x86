@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio, jogador_da_vez
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio, jogador_da_vez, posicoes_do_tabuleiro
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -309,7 +309,7 @@ primeiro_caractere_valido:
   cmp al, 0x33                ; Comparar com 3
   je segundo_caractere_valido ; Se for 3, pula para o próximo teste
 
-  mov byte [rtn], 0                 ; Se não for 1, 2 ou 3, retorna 0
+  mov byte [rtn], 0                  ; Se não for 1, 2 ou 3, retorna 0
   call imprime_erro_comando_invalido ; Se não for 1, 2 ou 3, imprime erro e retorna
   jmp retorno
 
@@ -337,24 +337,202 @@ terceiro_caractere_valido: ; Se chegou até aqui, o comando é válido
   je primeiro_caractere_c ; Se for C, pula para o próximo teste
 
 primeiro_caractere_x: ; Verifica se é a vez de X
-  mov bl, [jogador_da_vez] ; BL recebe o jogador da vez
-  cmp bl, 0                ; Comparar com 0 - jogador X
-  je jogada_valida         ; Se for a vez do jogador X, a jogada é válida 
+  mov bl, [jogador_da_vez]    ; BL recebe o jogador da vez
+  cmp bl, 0                   ; Comparar com 0 - jogador X
+  je verifica_posicao_ocupada ; Se for a vez do jogador X, verifica se a posição está ocupada 
 
   mov byte [rtn], 0                 ; Se não for a vez do jogador X, retorna 0
   call imprime_erro_jogada_invalida ; Se não for a vez do jogador X, imprime erro e retorna
   jmp retorno                       
 
 primeiro_caractere_c: ; Verifica se é a vez de C
-  mov bl, [jogador_da_vez] ; BL recebe o jogador da vez
-  cmp bl, 1                ; Comparar com 1 - jogador C
-  je jogada_valida         ; Se for a vez do jogador C, a jogada é válida
+  mov bl, [jogador_da_vez]    ; BL recebe o jogador da vez
+  cmp bl, 1                   ; Comparar com 1 - jogador C
+  je verifica_posicao_ocupada ; Se for a vez do jogador C, verifica se a posição está ocupada
 
   mov byte [rtn], 0                 ; Se não for a vez do jogador C, retorna 0
   call imprime_erro_jogada_invalida ; Se não for a vez do jogador C, imprime erro e retorna
   jmp retorno
 
-; TODO: Verificar se a posição no tabuleiro já está ocupada
+verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
+  ; Limpando registradores
+  xor al,al
+  xor bl,bl
+  xor cl,cl
+  xor dx, dx
+
+  ; Calcula-se a posicao a partir das coordenadas
+  ; coordenadas | calculo de posicao                   |  posicao calculada
+  ; 11 12 13    | (1-1)x3+1=1 (1-1)x3+2=2 (1-1)x3+3=3  |  1 2 3  
+  ; 21 22 23    | (2-1)x3+1=4 (2-1)x3+2=5 (2-1)x3+3=6  |  4 5 6  
+  ; 31 32 33    | (3-1)x3+1=7 (3-1)x3+2=8 (3-1)x3+3=9  |  7 8 9  
+
+  mov byte al, [buffer + 1]
+  sub al, 0x31 ; aqui faz-se [al - (30+1)], a subtração de 30 é para transformar ascii em decimal
+  mov bl, 0x03
+  mul bl
+  mov byte bl, [buffer + 2]
+  sub bl, 0x30
+  add al, bl 
+  mov bl, al ; em bl fica o resultado final da posicao calculada (número em decimal)
+
+  ; Compara se a jogada é na posicao 11
+  cmp bl, 0x01
+  jne jmp_curto_11
+  ; Verifica se a posicao 11 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x01
+  cmp dx, 0x01
+  jne marca_posicao_11
+  jmp posicao_ocupada
+  ; Marca a posicao 11 como jogada
+  marca_posicao_11:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x01
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_11:
+
+  ; Compara se a jogada é na posicao 12
+  cmp bl, 0x02
+  jne jmp_curto_22
+  ; Verifica se a posicao 12 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x02
+  cmp dx, 0x02
+  jne marca_posicao_12
+  jmp posicao_ocupada
+  marca_posicao_12:
+  ; Marca a posicao 12 como jogada
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x02
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_22:
+
+  ; Compara se a jogada é na posicao 13
+  cmp bl, 0x03
+  jne jmp_curto_33
+  ; Verifica se a posicao 13 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x04
+  cmp dx, 0x04
+  jne marca_posicao_13
+  jmp posicao_ocupada
+  ; Marca a posicao 13 como jogada
+  marca_posicao_13:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x04
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_33:
+
+  ; Compara se a jogada é na posicao 21
+  cmp bl, 0x04
+  jne jmp_curto_44
+  ; Verifica se a posicao 21 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x08
+  cmp dx, 0x08
+  jne marca_posicao_21
+  jmp posicao_ocupada
+  ; Marca a posicao 21 como jogada
+  marca_posicao_21:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x08
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_44:
+
+  ; Compara se a jogada é na posicao 22
+  cmp bl, 0x05
+  jne jmp_curto_55
+  ; Verifica se a posicao 22 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x10
+  cmp dx, 0x10
+  jne marca_posicao_22
+  jmp posicao_ocupada
+  ; Marca a posicao 22 como jogada
+  marca_posicao_22:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x10
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_55:
+
+  ; Compara se a jogada é na posicao 23
+  cmp bl, 0x06
+  jne jmp_curto_66
+  ; Verifica se a posicao 23 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x20
+  cmp dx, 0x20
+  jne marca_posicao_23
+  jmp posicao_ocupada
+  ; Marca a posicao 23 como jogada
+  marca_posicao_23:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x20
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_66:
+
+  ; Compara se a jogada é na posicao 31
+  cmp bl, 0x07
+  jne jmp_curto_77
+  ; Verifica se a posicao 31 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x40
+  cmp dx, 0x40
+  jne marca_posicao_31
+  jmp posicao_ocupada
+  ; Marca a posicao 31 como jogada
+  marca_posicao_31:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x40
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_77:
+
+  ; Compara se a jogada é na posicao 32
+  cmp bl, 0x08
+  jne jmp_curto_88
+  ; Verifica se a posicao 32 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x80
+  cmp dx, 0x80
+  jne marca_posicao_32
+  jmp posicao_ocupada
+  ; Marca a posicao 32 como jogada
+  marca_posicao_32:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x80
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_88:
+
+  ; Compara se a jogada é na posicao 33
+  cmp bl, 0x09
+  jne jmp_curto_99
+  ; Verifica se a posicao 33 já foi jogada
+  mov dx, [posicoes_do_tabuleiro]
+  and dx, 0x100
+  cmp dx, 0x100
+  jne marca_posicao_33
+  jmp posicao_ocupada
+  ; Marca a posicao 33 como jogada
+  marca_posicao_33:
+  mov dx, [posicoes_do_tabuleiro]
+  or dx, 0x100
+  mov [posicoes_do_tabuleiro], dx
+  jmp jogada_valida
+  jmp_curto_99:
+
+posicao_ocupada:
+  mov byte [rtn], 0                 ; Retorna 0
+  call imprime_erro_jogada_invalida ; Se a posição já estiver ocupada, imprime erro e retorna
+  jmp retorno
 
 jogada_valida:
   ; Faz o toggle da variável jogador_da_vez (passa a vez pro próximo jogador)
