@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio, jogador_da_vez, posicoes_do_tabuleiro
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio_jogada, jogador_da_vez, posicoes_do_tabuleiro
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -99,9 +99,9 @@ terminou_jogada:
   int 0x10     ; Chamada do sistema BIOS
 
   ; Limpa a impressão da jogada anterior antes
-  mov dx, prompt_vazio ; String vazia para limpar o prompt
-  mov ah, 9            ; Função de exibição de caractere
-  int 21h              ; Chamada do sistema
+  mov dx, prompt_vazio_jogada ; String vazia para limpar o prompt
+  mov ah, 9                   ; Função de exibição de caractere
+  int 21h                     ; Chamada do sistema
 
   mov [tamanho_jogada], bx ; Armazena o tamanho da jogada para futura verificação
   mov cx, bx               ; Inicializa contador com o tamanho do buffer

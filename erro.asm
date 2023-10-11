@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern prompt_comando_invalido, prompt_jogada_invalida_vez, prompt_jogada_invalida_pos, prompt_vazio
+extern prompt_comando_invalido, prompt_jogada_invalida_vez, prompt_jogada_invalida_pos, prompt_vazio_erro
 ; Exportando variáveis e funções funções 
 global imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro
 
@@ -166,7 +166,7 @@ limpa_prompt_erro:
   mov dl, 8     ; Posição horizontal 
   int 0x10      ; Chamada do sistema BIOS
 
-  mov dx, prompt_vazio ; String vazia para limpar o prompt
+  mov dx, prompt_vazio_erro ; String vazia para limpar o prompt
   mov ah, 9            ; Função de exibição de caractere
   int 21h              ; Chamada do sistema
 
