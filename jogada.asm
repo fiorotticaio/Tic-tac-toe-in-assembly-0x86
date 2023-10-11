@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida, limpa_prompt_erro, tamanho_jogada, prompt_vazio, jogador_da_vez, posicoes_do_tabuleiro
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio, jogador_da_vez, posicoes_do_tabuleiro
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida
 
@@ -342,7 +342,7 @@ primeiro_caractere_x: ; Verifica se é a vez de X
   je verifica_posicao_ocupada ; Se for a vez do jogador X, verifica se a posição está ocupada 
 
   mov byte [rtn], 0                 ; Se não for a vez do jogador X, retorna 0
-  call imprime_erro_jogada_invalida ; Se não for a vez do jogador X, imprime erro e retorna
+  call imprime_erro_jogada_invalida_vez ; Se não for a vez do jogador X, imprime erro e retorna
   jmp retorno                       
 
 primeiro_caractere_c: ; Verifica se é a vez de C
@@ -350,8 +350,8 @@ primeiro_caractere_c: ; Verifica se é a vez de C
   cmp bl, 1                   ; Comparar com 1 - jogador C
   je verifica_posicao_ocupada ; Se for a vez do jogador C, verifica se a posição está ocupada
 
-  mov byte [rtn], 0                 ; Se não for a vez do jogador C, retorna 0
-  call imprime_erro_jogada_invalida ; Se não for a vez do jogador C, imprime erro e retorna
+  mov byte [rtn], 0                     ; Se não for a vez do jogador C, retorna 0
+  call imprime_erro_jogada_invalida_vez ; Se não for a vez do jogador C, imprime erro e retorna
   jmp retorno
 
 verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
@@ -530,8 +530,8 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   jmp_curto_99:
 
 posicao_ocupada:
-  mov byte [rtn], 0                 ; Retorna 0
-  call imprime_erro_jogada_invalida ; Se a posição já estiver ocupada, imprime erro e retorna
+  mov byte [rtn], 0                     ; Retorna 0
+  call imprime_erro_jogada_invalida_pos ; Se a posição já estiver ocupada, imprime erro e retorna
   jmp retorno
 
 jogada_valida:
