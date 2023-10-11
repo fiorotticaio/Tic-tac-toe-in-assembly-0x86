@@ -5,7 +5,7 @@
 ; Importando funções
 extern desenha_tabuleiro, le_jogada, computa_jogada, verifica_jogada_valida
 ; Exportando variáveis
-global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_comando_invalido, prompt_jogada_invalida, prompt_vazio, tamanho_jogada, jogador_da_vez
+global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_comando_invalido, prompt_jogada_invalida, prompt_vazio, tamanho_jogada, jogador_da_vez, posicoes_do_tabuleiro
 
 
 segment codigo
@@ -21,6 +21,12 @@ segment codigo
 
 
 cria_novo_jogo:
+  ; Resetando as variáveis
+  mov byte [jogador_da_vez], 0
+  mov byte [posicoes_do_tabuleiro], 0
+  mov byte [posicoes_do_tabuleiro + 1], 0
+  mov byte [rtn], 1
+
   ; Salvar modo corrente de video (vendo como está o modo de video da maquina)
 	mov ah, 0x0f
 	int 0x10
@@ -104,6 +110,9 @@ segment dados
   prompt_vazio db "                    $", 0
 
   jogador_da_vez db 0 ; 0 para o jogador X e 1 para o jogador C
+
+  posicoes_do_tabuleiro resb 2 ; Posições do tabuleiro
+  
 
 
 segment pilha pilha
