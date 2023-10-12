@@ -1,5 +1,5 @@
 ; Exportando funções
-global desenha_tabuleiro, desenha_jogada
+global desenha_tabuleiro, desenha_jogada, desenha_diagonal_1, desenha_diagonal_2, desenha_coluna_1, desenha_coluna_2, desenha_coluna_3, desenha_linha_1, desenha_linha_2, desenha_linha_3
 ; Importando variáveis e funções
 extern line, cor, caracter, cursor, circle, xc, yc, buffer
 
@@ -340,3 +340,139 @@ desenha_X:
   call line
 
   ret ; Retornando da função
+
+desenha_diagonal_1:
+mov ax, 220
+push ax ; coord x1
+
+mov ax, 400
+push ax ; coord y1
+
+mov ax, 420 
+push ax ; coord x2
+
+mov ax, 200
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função
+
+desenha_diagonal_2:
+mov ax, 420
+push ax ; coord x1
+
+mov ax, 400
+push ax ; coord y1
+
+mov ax, 220 
+push ax ; coord x2
+
+mov ax, 200
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função
+
+desenha_coluna_1:
+mov ax, 220
+push ax ; coord x1
+
+mov ax, 400
+push ax ; coord y1
+
+mov ax, 220 
+push ax ; coord x2
+
+mov ax, 200
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função
+
+desenha_coluna_2:
+mov ax, 320
+push ax ; coord x1
+
+mov ax, 400
+push ax ; coord y1
+
+mov ax, 320 
+push ax ; coord x2
+
+mov ax, 200
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função
+
+desenha_coluna_3:
+mov ax, 420
+push ax ; coord x1
+
+mov ax, 400
+push ax ; coord y1
+
+mov ax, 420 
+push ax ; coord x2
+
+mov ax, 200
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função
+
+desenha_linha_1:
+mov ax, 220
+push ax ; coord x1
+
+mov ax, 400
+push ax ; coord y1
+
+mov ax, 420 
+push ax ; coord x2
+
+mov ax, 400
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função
+
+desenha_linha_2:
+mov ax, 220
+push ax ; coord x1
+
+mov ax, 300
+push ax ; coord y1
+
+mov ax, 420 
+push ax ; coord x2
+
+mov ax, 300
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função
+
+desenha_linha_3:
+mov ax, 220
+push ax ; coord x1
+
+mov ax, 200
+push ax ; coord y1
+
+mov ax, 420 
+push ax ; coord x2
+
+mov ax, 200
+push ax ; coord y2
+
+call line
+
+ret ; Retornando da função

@@ -3,9 +3,9 @@
 
 
 ; Importando funções
-extern desenha_tabuleiro, le_jogada, computa_jogada, verifica_jogada_valida
+extern desenha_tabuleiro, le_jogada, computa_jogada, verifica_jogada_valida, verifica_vencedor
 ; Exportando variáveis
-global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_comando_invalido, prompt_jogada_invalida_vez, prompt_jogada_invalida_pos, prompt_vazio_erro, prompt_vazio_jogada, tamanho_jogada, jogador_da_vez, posicoes_do_tabuleiro
+global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_comando_invalido, prompt_jogada_invalida_vez, prompt_jogada_invalida_pos, prompt_vazio_erro, prompt_vazio_jogada, tamanho_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, jogo_acabou
 
 
 segment codigo
@@ -25,6 +25,11 @@ cria_novo_jogo:
   mov byte [jogador_da_vez], 0
   mov byte [posicoes_do_tabuleiro], 0
   mov byte [posicoes_do_tabuleiro + 1], 0
+  mov byte [jogo_acabou], 0
+  mov byte [jogadas_x], 0
+  mov byte [jogadas_x+1], 0
+  mov byte [jogadas_c], 0
+  mov byte [jogadas_c+1], 0
   mov byte [rtn], 1
 
   ; Salvar modo corrente de video (vendo como está o modo de video da maquina)
@@ -60,6 +65,11 @@ faz_jogada:
   cmp al, 'c'
   je cria_novo_jogo ; Se for, pula para o início do programa
 
+  ; Verifica se o jogo acabou, caso tenha acabado, nao realize a jogada
+  mov dl, [jogo_acabou]
+  cmp dl, 1
+  je faz_jogada
+  
   call verifica_jogada_valida ; Verifica se a jogada é válida
   mov byte bl, [rtn]          ; Move o retorno da função para BL
   cmp bl, 0                   ; Comparação para ver se a jogada é válida
@@ -67,8 +77,8 @@ faz_jogada:
 
   call computa_jogada
 
-  ; TODO: Verifica se alguem venceu
-  
+  call verifica_vencedor
+
   jmp faz_jogada ; Continua o jogo
 
 
@@ -112,8 +122,11 @@ segment dados
   prompt_vazio_jogada db "           $", 0 ; Menor para não estragar a caixa de mensagens
 
   jogador_da_vez db 0 ; 0 para o jogador X e 1 para o jogador C
+  jogo_acabou db 0 ; 0 para jogo ainda em andamento e 1 para jogo terminado (nao faz mais jogadas) 
 
   posicoes_do_tabuleiro resb 2 ; Cada bit representa uma posição (8 bits do primeiro byte + 1 bit do segundo)
+  jogadas_x resb 2 ; Cada bit ligado representa uma posição onde tem uma jogada X
+  jogadas_c resb 2 ; Cada bit ligado representa uma posição onde tem uma jogada C
   
 
 

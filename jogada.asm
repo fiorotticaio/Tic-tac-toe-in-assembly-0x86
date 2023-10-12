@@ -1,7 +1,7 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio_jogada, jogador_da_vez, posicoes_do_tabuleiro
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, prompt_vencedor, desenha_diagonal_1, desenha_diagonal_2, desenha_coluna_1, desenha_coluna_2, desenha_coluna_3, desenha_linha_1, desenha_linha_2, desenha_linha_3, cor, jogo_acabou
 ; Exportando variáveis e funções funções 
-global le_jogada, computa_jogada, verifica_jogada_valida
+global le_jogada, computa_jogada, verifica_jogada_valida, verifica_vencedor
 
 
 
@@ -390,6 +390,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x01
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 11
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_11
+  atualiza_x_11:
+  mov dx, [jogadas_x]
+  or dx, 0x01
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_11:
+  mov dx, [jogadas_c]
+  or dx, 0x01
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_11:
 
@@ -407,6 +421,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x02
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 12
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_12
+  atualiza_x_12:
+  mov dx, [jogadas_x]
+  or dx, 0x02
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_12:
+  mov dx, [jogadas_c]
+  or dx, 0x02
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_22:
 
@@ -424,6 +452,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x04
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 13
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_13
+  atualiza_x_13:
+  mov dx, [jogadas_x]
+  or dx, 0x04
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_13:
+  mov dx, [jogadas_c]
+  or dx, 0x04
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_33:
 
@@ -441,6 +483,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x08
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 21
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_21
+  atualiza_x_21:
+  mov dx, [jogadas_x]
+  or dx, 0x08
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_21:
+  mov dx, [jogadas_c]
+  or dx, 0x08
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_44:
 
@@ -458,6 +514,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x10
   mov [posicoes_do_tabuleiro], dx
+  
+  ; Atualizando os bytes de jogadas X ou C na posição 22
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_22
+  atualiza_x_22:
+  mov dx, [jogadas_x]
+  or dx, 0x10
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_22:
+  mov dx, [jogadas_c]
+  or dx, 0x10
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_55:
 
@@ -475,6 +545,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x20
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 23
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_23
+  atualiza_x_23:
+  mov dx, [jogadas_x]
+  or dx, 0x20
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_23:
+  mov dx, [jogadas_c]
+  or dx, 0x20
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_66:
 
@@ -492,6 +576,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x40
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 31
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_31
+  atualiza_x_31:
+  mov dx, [jogadas_x]
+  or dx, 0x40
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_31:
+  mov dx, [jogadas_c]
+  or dx, 0x40
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_77:
 
@@ -509,6 +607,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x80
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 32
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_32
+  atualiza_x_32:
+  mov dx, [jogadas_x]
+  or dx, 0x80
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_32:
+  mov dx, [jogadas_c]
+  or dx, 0x80
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_88:
 
@@ -526,6 +638,20 @@ verifica_posicao_ocupada: ; Mesma ideia que a computa_jogada
   mov dx, [posicoes_do_tabuleiro]
   or dx, 0x100
   mov [posicoes_do_tabuleiro], dx
+
+  ; Atualizando os bytes de jogadas X ou C na posição 33
+  mov bl, [jogador_da_vez] 
+  cmp bl, 0 ; verificando se é X
+  jne atualiza_c_33
+  atualiza_x_33:
+  mov dx, [jogadas_x]
+  or dx, 0x100
+  mov [jogadas_x], dx
+  jmp jogada_valida
+  atualiza_c_33:
+  mov dx, [jogadas_c]
+  or dx, 0x100
+  mov [jogadas_c], dx
   jmp jogada_valida
   jmp_curto_99:
 
@@ -543,6 +669,212 @@ jogada_valida:
   call limpa_prompt_erro ; Limpa o prompt de erro
   mov byte [rtn], 1      ; Retorna 1
   
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornar para o programa principal
+
+; ******************************************************************************
+; Função verifica_vencedor
+; ******************************************************************************
+verifica_vencedor:
+  ; Salvando o contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+
+  mov	byte[cor], 4 ; Seta a cor da linha para vermelho
+
+  ; Posições convertidas em binário
+  ; 11 - 0 0000 0001
+  ; 12 - 0 0000 0010
+  ; 13 - 0 0000 0100
+
+  ; 21 - 0 0000 1000
+  ; 22 - 0 0001 0000
+  ; 23 - 0 0010 0000
+  
+  ; 31 - 0 0100 0000
+  ; 32 - 0 1000 0000
+  ; 33 - 1 0000 0000
+
+  ; Possíveis variações de um jogo ganho
+  ; 11 + 22 + 33 = 1 0001 0001 Diagonal \
+  ; 13 + 22 + 31 = 0 0101 0100 Diagonal /
+
+  ; 11 + 21 + 31 = 0 0100 1001 Coluna 1
+  ; 12 + 22 + 32 = 0 1001 0010 Coluna 2
+  ; 13 + 23 + 33 = 1 0010 0100 Coluna 3
+
+  ; 11 + 12 + 13 = 0 0000 0111 Linha 1
+  ; 21 + 22 + 23 = 0 0011 1000 Linha 2
+  ; 31 + 32 + 33 = 1 1100 0000 Linha 3
+
+  ; Limpando registrador
+  xor dx,dx
+
+  ; =========================== Verificando vencedor X ===========================
+
+  ; Diagonal \
+  mov dx, [jogadas_x]
+  and dx, 0x111
+  cmp dx, 0x111
+  jne jmp_curto_100
+  call desenha_diagonal_1
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_100:
+
+  ; Diagonal /
+  mov dx, [jogadas_x]
+  and dx, 0x54
+  cmp dx, 0x54
+  jne jmp_curto_101
+  call desenha_diagonal_2
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_101:
+
+  ; Coluna 1
+  mov dx, [jogadas_x]
+  and dx, 0x49
+  cmp dx, 0x49
+  jne jmp_curto_102
+  call desenha_coluna_1
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_102:
+
+  ; Coluna 2
+  mov dx, [jogadas_x]
+  and dx, 0x92
+  cmp dx, 0x92
+  jne jmp_curto_103
+  call desenha_coluna_2
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_103:
+
+  ; Coluna 3
+  mov dx, [jogadas_x]
+  and dx, 0x124
+  cmp dx, 0x124
+  jne jmp_curto_104
+  call desenha_coluna_3
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_104:
+
+  ; Linha 1
+  mov dx, [jogadas_x]
+  and dx, 0x07
+  cmp dx, 0x07
+  jne jmp_curto_105
+  call desenha_linha_1
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_105:
+
+  ; Linha 2
+  mov dx, [jogadas_x]
+  and dx, 0x38
+  cmp dx, 0x38
+  jne jmp_curto_106
+  call desenha_linha_2
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_106:
+
+  ; Linha 3
+  mov dx, [jogadas_x]
+  and dx, 0x1C0
+  cmp dx, 0x1C0
+  jne jmp_curto_107
+  call desenha_linha_3
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_107:
+
+  ; =========================== Verificando vencedor C ===========================
+
+  ; Diagonal  \
+  mov dx, [jogadas_c]
+  and dx, 0x111
+  cmp dx, 0x111
+  jne jmp_curto_108
+  call desenha_diagonal_1
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_108:
+  
+  ; Diagonal /
+  mov dx, [jogadas_c]
+  and dx, 0x54
+  cmp dx, 0x54
+  jne jmp_curto_109
+  call desenha_diagonal_2
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_109:
+
+  ; Coluna 1
+  mov dx, [jogadas_c]
+  and dx, 0x49
+  cmp dx, 0x49
+  jne jmp_curto_110
+  call desenha_coluna_1
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_110:
+
+  ; Coluna 2
+  mov dx, [jogadas_c]
+  and dx, 0x92
+  cmp dx, 0x92
+  jne jmp_curto_111
+  call desenha_coluna_2
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_111:
+
+  ; Coluna 3
+  mov dx, [jogadas_c]
+  and dx, 0x124
+  cmp dx, 0x124
+  jne jmp_curto_112
+  call desenha_coluna_3
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_112:
+
+  ; Linha 1
+  mov dx, [jogadas_c]
+  and dx, 0x07
+  cmp dx, 0x07
+  jne jmp_curto_113
+  call desenha_linha_1
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_113:
+
+  ; Linha 2
+  mov dx, [jogadas_c]
+  and dx, 0x38
+  cmp dx, 0x38
+  jne jmp_curto_114
+  call desenha_linha_2
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_114:
+
+  ; Linha 3
+  mov dx, [jogadas_c]
+  and dx, 0x1C0
+  cmp dx, 0x1C0
+  jne jmp_curto_115
+  call desenha_linha_3
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_115:
+
+  mov	byte[cor], 7 ; Seta a cor da linha para branco
+
   ; Recuperando o contexto
   pop bp
   pop di
