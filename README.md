@@ -33,7 +33,7 @@ C:\> Tic-tac-toe-in-assembly-0x86\jogo.exe
   - [x] quando extrapola o tamanho do comando (3 caracteres)
   - [x] mesmo jogador nao deve jogar duas vezes seguidas
   - [x] nao se deve jogar em uma posição já preenchida
-- [ ] Implementar identificação de vitória.
+- [x] Implementar identificação de vitória.
 
 # Bugs
 - [ ] Problema com a impressão do prompt de jogada
