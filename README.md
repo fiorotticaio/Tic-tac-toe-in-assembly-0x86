@@ -34,8 +34,8 @@ C:\> Tic-tac-toe-in-assembly-0x86\jogo.exe
   - [x] mesmo jogador nao deve jogar duas vezes seguidas
   - [x] nao se deve jogar em uma posição já preenchida
 - [x] Implementar identificação de vitória.
-- [ ] Implementar identificação de empate.
-- [ ] Reiniciar o jogo após vitória ou empate.
+- [x] Implementar identificação de empate.
+- [ ] Delay e reiniciar o jogo após vitória ou empate.
 
 # Bugs
 - [ ] Problema com a impressão do prompt de jogada
