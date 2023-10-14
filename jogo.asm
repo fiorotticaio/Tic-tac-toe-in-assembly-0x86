@@ -69,7 +69,7 @@ faz_jogada:
   mov dl, [jogo_acabou]
   cmp dl, 1
   je faz_jogada
-  
+
   call verifica_jogada_valida ; Verifica se a jogada é válida
   mov byte bl, [rtn]          ; Move o retorno da função para BL
   cmp bl, 0                   ; Comparação para ver se a jogada é válida
