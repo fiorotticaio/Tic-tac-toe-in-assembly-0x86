@@ -1,5 +1,5 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, prompt_vencedor, desenha_diagonal_1, desenha_diagonal_2, desenha_coluna_1, desenha_coluna_2, desenha_coluna_3, desenha_linha_1, desenha_linha_2, desenha_linha_3, cor, jogo_acabou
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, desenha_diagonal_1, desenha_diagonal_2, desenha_coluna_1, desenha_coluna_2, desenha_coluna_3, desenha_linha_1, desenha_linha_2, desenha_linha_3, cor, jogo_acabou
 ; Exportando variáveis e funções funções 
 global le_jogada, computa_jogada, verifica_jogada_valida, verifica_vencedor
 
@@ -681,6 +681,8 @@ jogada_valida:
 
   ret ; Retornar para o programa principal
 
+
+
 ; ******************************************************************************
 ; Função verifica_vencedor
 ; ******************************************************************************
@@ -872,6 +874,13 @@ verifica_vencedor:
   call desenha_linha_3
   mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
   jmp_curto_115:
+
+  ; =========================== Empate ===========================
+  mov dx, [posicoes_do_tabuleiro]
+  cmp dx, 0x1FF
+  jne jmp_curto_116
+  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  jmp_curto_116:
 
   mov	byte[cor], 7 ; Seta a cor da linha para branco
 
