@@ -1,7 +1,7 @@
 ; Importando variáveis e funções
-extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, desenha_diagonal_1, desenha_diagonal_2, desenha_coluna_1, desenha_coluna_2, desenha_coluna_3, desenha_linha_1, desenha_linha_2, desenha_linha_3, cor, jogo_acabou
+extern buffer, tamanho_max_buffer, desenha_jogada, xc, yc, rtn, imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, tamanho_jogada, prompt_vazio_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, desenha_diagonal_1, desenha_diagonal_2, desenha_coluna_1, desenha_coluna_2, desenha_coluna_3, desenha_linha_1, desenha_linha_2, desenha_linha_3, cor, jogo_acabou, prompt_fim_jogo, prompt_inicial, prompt_vazio_erro, imprime_erro_jogada_invalida_tam
 ; Exportando variáveis e funções funções 
-global le_jogada, computa_jogada, verifica_jogada_valida, verifica_vencedor
+global le_jogada, computa_jogada, verifica_jogada_valida, verifica_vencedor, mensagem_fim_jogo, mensagem_inicial
 
 
 
@@ -60,6 +60,14 @@ le_caractere:
   ; Verifica se foi pressionado BACKSPACE
   cmp al, 0x08   ; Comparar com BACKSPACE (0x08)
   je backspace   ; Se for BACKSPCE, apaga o caracter atual e volta um no cursor
+
+  ; ; Verifica se passou do limite do prompt (3 caracteres)
+  ; cmp bx, 0x03
+  ; jle continua_lendo
+  ; call imprime_erro_jogada_invalida_tam ; Caso tenha ultrapassado limite, imprima o erro
+  ; jmp backspace ; E apague o último caractere
+
+continua_lendo:
   
   ; Verifica se foi pressionado ENTER
   cmp al, 0x0d       ; Comparar com ENTER (0x0d)
@@ -83,8 +91,8 @@ backspace:
 
   mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
   mov bh, 0    ; Página de vídeo (normalmente 0)
-  mov dh, 24   ; Posição vertical (24: chutando e vendo onde fica melhor)
-  mov dl, 8   ; Posição horizontal (45: chutando e vendo onde fica melhor)
+  mov dh, 24   ; Posição vertical 
+  mov dl, 8    ; Posição horizontal 
   add dl, bl   ; Volta o cursor uma unidade p esquerda
   int 0x10     ; Chamada do sistema BIOS
 
@@ -883,6 +891,86 @@ verifica_vencedor:
   jmp_curto_116:
 
   mov	byte[cor], 7 ; Seta a cor da linha para branco
+
+  mov dl, [jogo_acabou]
+  cmp dl, 1
+  jne pula_prompt
+  call mensagem_fim_jogo
+  pula_prompt:
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornar para o programa principal
+
+mensagem_fim_jogo:
+  ; Salvando o contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+  
+  call limpa_prompt_erro ; Limpa o prompt de mensagens antes de imprimir qualquer coisa
+
+  ; Coloca o cursor no lugar
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 27    ; Posição vertical
+  mov dl, 8     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  ; Limpa a impressão da jogada anterior antes
+  mov dx, prompt_fim_jogo ; String vazia para limpar o prompt
+  mov ah, 9               ; Função de exibição de caractere
+  int 21h                 ; Chamada do sistema
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornar para o programa principal
+  
+mensagem_inicial:
+  ; Salvando o contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+  
+  call limpa_prompt_erro ; Limpa o prompt de mensagens antes de imprimir qualquer coisa
+
+  ; Coloca o cursor no lugar
+  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  mov bh, 0     ; Página de vídeo (normalmente 0)
+  mov dh, 27    ; Posição vertical
+  mov dl, 8     ; Posição horizontal 
+  int 0x10      ; Chamada do sistema BIOS
+
+  ; Limpa a impressão da jogada anterior antes
+  mov dx, prompt_inicial ; String vazia para limpar o prompt
+  mov ah, 9               ; Função de exibição de caractere
+  int 21h                 ; Chamada do sistema
 
   ; Recuperando o contexto
   pop bp
