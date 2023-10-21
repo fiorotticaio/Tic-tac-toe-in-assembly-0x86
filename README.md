@@ -35,9 +35,9 @@ C:\> Tic-tac-toe-in-assembly-0x86\jogo.exe
   - [x] nao se deve jogar em uma posição já preenchida
 - [x] Implementar identificação de vitória.
 - [x] Implementar identificação de empate.
-- [x] Prompt de fim de jogo.
+- [-] Prompt de fim de jogo. (alguns bugs para resolver)
 - [ ] Detectar quando da velha
-- [-] Detectar overflow no prompt (um código embrião está comentado na função le_caractere)
+- [x] Detectar overflow no prompt 
 
 # Bugs
 - [ ] Problema com a impressão do prompt de jogada

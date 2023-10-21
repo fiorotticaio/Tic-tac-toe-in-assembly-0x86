@@ -277,7 +277,7 @@ desenha_tabuleiro:
 
 
 ; ******************************************************************************
-; Função desenha_tabuleiro
+; Função desenha_jogada
 ; ******************************************************************************
 desenha_jogada:
   mov cl, [buffer] ; Recebendo o caractere da jogada

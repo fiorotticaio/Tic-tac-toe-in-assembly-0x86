@@ -61,14 +61,35 @@ le_caractere:
   cmp al, 0x08   ; Comparar com BACKSPACE (0x08)
   je backspace   ; Se for BACKSPCE, apaga o caracter atual e volta um no cursor
 
-  ; ; Verifica se passou do limite do prompt (3 caracteres)
-  ; cmp bx, 0x03
-  ; jle continua_lendo
-  ; call imprime_erro_jogada_invalida_tam ; Caso tenha ultrapassado limite, imprima o erro
-  ; jmp backspace ; E apague o último caractere
+  ; Verifica se passou do limite do prompt (3 caracteres)
+  cmp bx, 0x03
+  jle continua_lendo
+  call imprime_erro_jogada_invalida_tam ; Caso tenha ultrapassado limite, imprima o erro
+  
+  ; Move o cursor para a esquerda
+  mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
+  mov bh, 0    ; Página de vídeo (normalmente 0)
+  mov dh, 24   ; Posição vertical (24: chutando e vendo onde fica melhor)
+  mov dl, 8    ; Posição horizontal (8: chutando e vendo onde fica melhor)
+  int 0x10     ; Chamada do sistema BIOS
+
+  ; Limpa a jogada digitada
+  mov dx, prompt_vazio_jogada ; String vazia para limpar o prompt
+  mov ah, 9                   ; Função de exibição de caractere
+  int 21h                     ; Chamada do sistema
+
+  ; Move o cursor para a esquerda de volta
+  mov ah, 0x02 ; Função 0x02: Configurar posição do cursor
+  mov bh, 0    ; Página de vídeo (normalmente 0)
+  mov dh, 24   ; Posição vertical (24: chutando e vendo onde fica melhor)
+  mov dl, 8    ; Posição horizontal (8: chutando e vendo onde fica melhor)
+  int 0x10     ; Chamada do sistema BIOS
+
+  xor bx, bx   ; Reinicia o contador de caracteres
+  mov cx, tamanho_max_buffer ; Tamanho máximo do buffer determina o loop de leiura de caractere
+  jmp proximo_caractere
 
 continua_lendo:
-  
   ; Verifica se foi pressionado ENTER
   cmp al, 0x0d       ; Comparar com ENTER (0x0d)
   je terminou_jogada ; Se for ENTER, termina a jogada
@@ -931,7 +952,7 @@ mensagem_fim_jogo:
   int 0x10      ; Chamada do sistema BIOS
 
   ; Limpa a impressão da jogada anterior antes
-  mov dx, prompt_fim_jogo ; String vazia para limpar o prompt
+  mov dx, prompt_fim_jogo ; String de fim de jogo
   mov ah, 9               ; Função de exibição de caractere
   int 21h                 ; Chamada do sistema
 

@@ -178,12 +178,12 @@ imprime_erro_jogada_invalida_tam:
   mov ah, 9
   int 21h
 
-  ; Volta o cursor para o campo de jogadas
-  mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
-  mov bh, 0     ; Página de vídeo (normalmente 0)
-  mov dh, 24    ; Posição vertical
-  mov dl, 8     ; Posição horizontal 
-  int 0x10      ; Chamada do sistema BIOS
+  ; ; Volta o cursor para o campo de jogadas
+  ; mov ah, 0x02  ; Função 0x02: Configurar posição do cursor
+  ; mov bh, 0     ; Página de vídeo (normalmente 0)
+  ; mov dh, 24    ; Posição vertical
+  ; mov dl, 8     ; Posição horizontal 
+  ; int 0x10      ; Chamada do sistema BIOS
 
   ; Recuperando o contexto
   pop bp

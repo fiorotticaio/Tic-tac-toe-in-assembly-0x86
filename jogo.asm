@@ -68,12 +68,10 @@ faz_jogada:
   cmp al, 'c'
   je cria_novo_jogo ; Se for, pula para o início do programa
 
-  ; Verifica se o jogo acabou, caso tenha acabado, nao realize a jogada, e imprime no prompt
+  ; Verifica se o jogo acabou, caso tenha acabado, nao realize a jogada, mas continue o loop
   mov dl, [jogo_acabou]
   cmp dl, 1
   je faz_jogada ; Continua o jogo
-
-ainda_nao_acabou:
 
   call verifica_jogada_valida ; Verifica se a jogada é válida
   mov byte bl, [rtn]          ; Move o retorno da função para BL
@@ -82,7 +80,7 @@ ainda_nao_acabou:
 
   call computa_jogada  ; Computa a jogada digitada pelo usuario (já validada)
 
-  call verifica_vencedor ; Verifica se houve vencedor apos a jogada
+  ; call verifica_vencedor ; Verifica se houve vencedor apos a jogada
 
   jmp faz_jogada ; Continua o jogo
 
@@ -119,7 +117,7 @@ segment dados
 
   rtn resb 1  ; Retorno de função
 
-  prompt_inicial db "Bem-vindo! Digite sua jogada$", 0 ; 0 no final para indicar o fim da string
+  prompt_inicial db "Bem-vindo!$", 0 ; 0 no final para indicar o fim da string
   prompt_comando_invalido db "Comando Invalido$", 0
   prompt_jogada_invalida_vez db "Jogada Invalida - Vez do outro jogador$", 0
   prompt_jogada_invalida_pos db "Jogada Invalida - Posicao ja ocupada$", 0
