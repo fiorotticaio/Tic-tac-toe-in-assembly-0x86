@@ -76,7 +76,7 @@ faz_jogada:
   call verifica_jogada_valida ; Verifica se a jogada é válida
   mov byte bl, [rtn]          ; Move o retorno da função para BL
   cmp bl, 0                   ; Comparação para ver se a jogada é válida
-  je faz_jogada               ; Se a jogada for inválida, faz outra jogada
+  je faz_jogada               ; Se a jogada for inválida, volta o loop e faz outra jogada
 
   call computa_jogada  ; Computa a jogada digitada pelo usuario (já validada)
 
@@ -107,7 +107,7 @@ segment dados
 
   modo_anterior	db 0
 
-  
+  ; TODO: talvez tenha que inicializar esses vetores aqui
   buffer resb 10             ; Buffer para armazenar os caracteres das jogadas
   tamanho_max_buffer equ 10  ; Tamanho máximo do buffer
   tamanho_jogada resb 2      ; Guarda o tamanho da jogada digitada

@@ -726,198 +726,214 @@ verifica_vencedor:
   push di
   push bp
 
-  mov	byte[cor], 4 ; Seta a cor da linha para vermelho
+  ; mov	byte[cor], 4 ; Seta a cor da linha para vermelho
 
-  ; Posições convertidas em binário
-  ; 11 - 0 0000 0001
-  ; 12 - 0 0000 0010
-  ; 13 - 0 0000 0100
+  ; ; Posições convertidas em binário
+  ; ; 11 - 0 0000 0001
+  ; ; 12 - 0 0000 0010
+  ; ; 13 - 0 0000 0100
 
-  ; 21 - 0 0000 1000
-  ; 22 - 0 0001 0000
-  ; 23 - 0 0010 0000
+  ; ; 21 - 0 0000 1000
+  ; ; 22 - 0 0001 0000
+  ; ; 23 - 0 0010 0000
   
-  ; 31 - 0 0100 0000
-  ; 32 - 0 1000 0000
-  ; 33 - 1 0000 0000
+  ; ; 31 - 0 0100 0000
+  ; ; 32 - 0 1000 0000
+  ; ; 33 - 1 0000 0000
 
-  ; Possíveis variações de um jogo ganho
-  ; 11 + 22 + 33 = 1 0001 0001 Diagonal \
-  ; 13 + 22 + 31 = 0 0101 0100 Diagonal /
+  ; ; Possíveis variações de um jogo ganho
+  ; ; 11 + 22 + 33 = 1 0001 0001 Diagonal \
+  ; ; 13 + 22 + 31 = 0 0101 0100 Diagonal /
 
-  ; 11 + 21 + 31 = 0 0100 1001 Coluna 1
-  ; 12 + 22 + 32 = 0 1001 0010 Coluna 2
-  ; 13 + 23 + 33 = 1 0010 0100 Coluna 3
+  ; ; 11 + 21 + 31 = 0 0100 1001 Coluna 1
+  ; ; 12 + 22 + 32 = 0 1001 0010 Coluna 2
+  ; ; 13 + 23 + 33 = 1 0010 0100 Coluna 3
 
-  ; 11 + 12 + 13 = 0 0000 0111 Linha 1
-  ; 21 + 22 + 23 = 0 0011 1000 Linha 2
-  ; 31 + 32 + 33 = 1 1100 0000 Linha 3
+  ; ; 11 + 12 + 13 = 0 0000 0111 Linha 1
+  ; ; 21 + 22 + 23 = 0 0011 1000 Linha 2
+  ; ; 31 + 32 + 33 = 1 1100 0000 Linha 3
 
-  ; Limpando registrador
-  xor dx,dx
+  ; ; Limpando registrador
+  ; xor dx,dx
 
-  ; =========================== Verificando vencedor X ===========================
+  ; ; =========================== Verificando vencedor X ===========================
 
-  ; Diagonal \
-  mov dx, [jogadas_x]
-  and dx, 0x111
-  cmp dx, 0x111
-  jne jmp_curto_100
-  call desenha_diagonal_1
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_100:
+  ; ; Diagonal \
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x111
+  ; cmp dx, 0x111
+  ; jne jmp_curto_100
+  ; call desenha_diagonal_1
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_100:
 
-  ; Diagonal /
-  mov dx, [jogadas_x]
-  and dx, 0x54
-  cmp dx, 0x54
-  jne jmp_curto_101
-  call desenha_diagonal_2
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_101:
+  ; ; Diagonal /
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x54
+  ; cmp dx, 0x54
+  ; jne jmp_curto_101
+  ; call desenha_diagonal_2
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_101:
 
-  ; Coluna 1
-  mov dx, [jogadas_x]
-  and dx, 0x49
-  cmp dx, 0x49
-  jne jmp_curto_102
-  call desenha_coluna_1
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_102:
+  ; ; Coluna 1
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x49
+  ; cmp dx, 0x49
+  ; jne jmp_curto_102
+  ; call desenha_coluna_1
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_102:
 
-  ; Coluna 2
-  mov dx, [jogadas_x]
-  and dx, 0x92
-  cmp dx, 0x92
-  jne jmp_curto_103
-  call desenha_coluna_2
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_103:
+  ; ; Coluna 2
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x92
+  ; cmp dx, 0x92
+  ; jne jmp_curto_103
+  ; call desenha_coluna_2
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_103:
 
-  ; Coluna 3
-  mov dx, [jogadas_x]
-  and dx, 0x124
-  cmp dx, 0x124
-  jne jmp_curto_104
-  call desenha_coluna_3
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_104:
+  ; ; Coluna 3
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x124
+  ; cmp dx, 0x124
+  ; jne jmp_curto_104
+  ; call desenha_coluna_3
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_104:
 
-  ; Linha 1
-  mov dx, [jogadas_x]
-  and dx, 0x07
-  cmp dx, 0x07
-  jne jmp_curto_105
-  call desenha_linha_1
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_105:
+  ; ; Linha 1
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x07
+  ; cmp dx, 0x07
+  ; jne jmp_curto_105
+  ; call desenha_linha_1
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_105:
 
-  ; Linha 2
-  mov dx, [jogadas_x]
-  and dx, 0x38
-  cmp dx, 0x38
-  jne jmp_curto_106
-  call desenha_linha_2
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_106:
+  ; ; Linha 2
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x38
+  ; cmp dx, 0x38
+  ; jne jmp_curto_106
+  ; call desenha_linha_2
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_106:
 
-  ; Linha 3
-  mov dx, [jogadas_x]
-  and dx, 0x1C0
-  cmp dx, 0x1C0
-  jne jmp_curto_107
-  call desenha_linha_3
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_107:
+  ; ; Linha 3
+  ; mov dx, [jogadas_x]
+  ; and dx, 0x1C0
+  ; cmp dx, 0x1C0
+  ; jne jmp_curto_107
+  ; call desenha_linha_3
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_107:
 
-  ; =========================== Verificando vencedor C ===========================
+  ; ; =========================== Verificando vencedor C ===========================
 
-  ; Diagonal  \
-  mov dx, [jogadas_c]
-  and dx, 0x111
-  cmp dx, 0x111
-  jne jmp_curto_108
-  call desenha_diagonal_1
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_108:
+  ; ; Diagonal  \
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x111
+  ; cmp dx, 0x111
+  ; jne jmp_curto_108
+  ; call desenha_diagonal_1
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_108:
   
-  ; Diagonal /
-  mov dx, [jogadas_c]
-  and dx, 0x54
-  cmp dx, 0x54
-  jne jmp_curto_109
-  call desenha_diagonal_2
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_109:
+  ; ; Diagonal /
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x54
+  ; cmp dx, 0x54
+  ; jne jmp_curto_109
+  ; call desenha_diagonal_2
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_109:
 
-  ; Coluna 1
-  mov dx, [jogadas_c]
-  and dx, 0x49
-  cmp dx, 0x49
-  jne jmp_curto_110
-  call desenha_coluna_1
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_110:
+  ; ; Coluna 1
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x49
+  ; cmp dx, 0x49
+  ; jne jmp_curto_110
+  ; call desenha_coluna_1
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_110:
 
-  ; Coluna 2
-  mov dx, [jogadas_c]
-  and dx, 0x92
-  cmp dx, 0x92
-  jne jmp_curto_111
-  call desenha_coluna_2
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_111:
+  ; ; Coluna 2
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x92
+  ; cmp dx, 0x92
+  ; jne jmp_curto_111
+  ; call desenha_coluna_2
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_111:
 
-  ; Coluna 3
-  mov dx, [jogadas_c]
-  and dx, 0x124
-  cmp dx, 0x124
-  jne jmp_curto_112
-  call desenha_coluna_3
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_112:
+  ; ; Coluna 3
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x124
+  ; cmp dx, 0x124
+  ; jne jmp_curto_112
+  ; call desenha_coluna_3
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_112:
 
-  ; Linha 1
-  mov dx, [jogadas_c]
-  and dx, 0x07
-  cmp dx, 0x07
-  jne jmp_curto_113
-  call desenha_linha_1
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_113:
+  ; ; Linha 1
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x07
+  ; cmp dx, 0x07
+  ; jne jmp_curto_113
+  ; call desenha_linha_1
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_113:
 
-  ; Linha 2
-  mov dx, [jogadas_c]
-  and dx, 0x38
-  cmp dx, 0x38
-  jne jmp_curto_114
-  call desenha_linha_2
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_114:
+  ; ; Linha 2
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x38
+  ; cmp dx, 0x38
+  ; jne jmp_curto_114
+  ; call desenha_linha_2
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_114:
 
-  ; Linha 3
-  mov dx, [jogadas_c]
-  and dx, 0x1C0
-  cmp dx, 0x1C0
-  jne jmp_curto_115
-  call desenha_linha_3
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_115:
+  ; ; Linha 3
+  ; mov dx, [jogadas_c]
+  ; and dx, 0x1C0
+  ; cmp dx, 0x1C0
+  ; jne jmp_curto_115
+  ; call desenha_linha_3
+  ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; jmp ultimo_jump
+  ; jmp_curto_115:
 
-  ; =========================== Empate ===========================
-  mov dx, [posicoes_do_tabuleiro]
-  cmp dx, 0x1FF
-  jne jmp_curto_116
-  mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
-  jmp_curto_116:
+  ; ; =========================== Empate ===========================
+  ; ; mov dx, [posicoes_do_tabuleiro]
+  ; ; cmp dx, 0x1FF
+  ; ; jne ultimo_jump
+  ; ; mov byte[jogo_acabou], 1 ; Atualiza flag de jogo terminado
+  ; ultimo_jump:
 
-  mov	byte[cor], 7 ; Seta a cor da linha para branco
+  ; mov	byte[cor], 7 ; Seta a cor da linha para branco
 
-  mov dl, [jogo_acabou]
-  cmp dl, 1
-  jne pula_prompt
-  call mensagem_fim_jogo
-  pula_prompt:
+  ; mov dl, [jogo_acabou]
+  ; cmp dl, 1
+  ; jne pula_prompt
+  ; call mensagem_fim_jogo
+  ; pula_prompt:
 
   ; Recuperando o contexto
   pop bp
