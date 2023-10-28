@@ -5,7 +5,7 @@
 ; Importando funções
 extern desenha_tabuleiro, le_jogada, computa_jogada, verifica_jogada_valida, verifica_vencedor, mensagem_fim_jogo, mensagem_inicial
 ; Exportando variáveis
-global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_comando_invalido, prompt_jogada_invalida_vez, prompt_jogada_invalida_pos, prompt_vazio_erro, prompt_vazio_jogada, tamanho_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, jogo_acabou, prompt_fim_jogo, prompt_inicial, prompt_jogada_invalida_tam
+global cor, buffer, tamanho_max_buffer, xc, yc, rtn, prompt_comando_invalido, prompt_jogada_invalida_vez, prompt_jogada_invalida_pos, prompt_vazio_erro, prompt_vazio_jogada, tamanho_jogada, jogador_da_vez, posicoes_do_tabuleiro, jogadas_x, jogadas_c, jogo_acabou, prompt_fim_jogo_x, prompt_fim_jogo_c, prompt_fim_jogo_emp, prompt_inicial, prompt_jogada_invalida_tam
 
 
 segment codigo
@@ -27,9 +27,9 @@ cria_novo_jogo:
   mov byte [posicoes_do_tabuleiro + 1], 0
   mov byte [jogo_acabou], 0
   mov byte [jogadas_x], 0
-  mov byte [jogadas_x+1], 0
+  mov byte [jogadas_x + 1], 0
   mov byte [jogadas_c], 0
-  mov byte [jogadas_c+1], 0
+  mov byte [jogadas_c + 1], 0
   mov byte [rtn], 1
 
   ; Salvar modo corrente de video (vendo como está o modo de video da maquina)
@@ -50,7 +50,7 @@ cria_novo_jogo:
 
 exit:
   mov ah, 0               ; Seta o modo de vídeo
-	mov al, [modo_anterior] ; Recupera o modo anterior
+	mov byte al, [modo_anterior] ; Recupera o modo anterior
 	int 0x10
 
   mov ax, 0x4c00 ; Move o valor 0x4c00 para AX (parâmetro que finaliza o programa na inetrrupção 0x21)
@@ -68,10 +68,13 @@ faz_jogada:
   cmp al, 'c'
   je cria_novo_jogo ; Se for, pula para o início do programa
 
+  xor dx,dx
+  xor ax,ax
+
   ; Verifica se o jogo acabou, caso tenha acabado, nao realize a jogada, mas continue o loop
-  mov dl, [jogo_acabou]
-  cmp dl, 1
-  je faz_jogada ; Continua o jogo
+  mov byte dl, [jogo_acabou]
+  cmp dl, 0x0    ; Possbilidades: 0-jogo inacabado, 1-X venceu, 2-C venceu, 3-empate
+  jne faz_jogada ; Continua o jogo
 
   call verifica_jogada_valida ; Verifica se a jogada é válida
   mov byte bl, [rtn]          ; Move o retorno da função para BL
@@ -80,7 +83,7 @@ faz_jogada:
 
   call computa_jogada  ; Computa a jogada digitada pelo usuario (já validada)
 
-  ; call verifica_vencedor ; Verifica se houve vencedor apos a jogada
+  call verifica_vencedor ; Verifica se houve vencedor apos a jogada
 
   jmp faz_jogada ; Continua o jogo
 
@@ -107,7 +110,6 @@ segment dados
 
   modo_anterior	db 0
 
-  ; TODO: talvez tenha que inicializar esses vetores aqui
   buffer resb 10             ; Buffer para armazenar os caracteres das jogadas
   tamanho_max_buffer equ 10  ; Tamanho máximo do buffer
   tamanho_jogada resb 2      ; Guarda o tamanho da jogada digitada
@@ -117,14 +119,16 @@ segment dados
 
   rtn resb 1  ; Retorno de função
 
-  prompt_inicial db "Bem-vindo!$", 0 ; 0 no final para indicar o fim da string
+  prompt_inicial db "Bem-vindo! X joga primeiro.$", 0 ; 0 no final para indicar o fim da string
   prompt_comando_invalido db "Comando Invalido$", 0
   prompt_jogada_invalida_vez db "Jogada Invalida - Vez do outro jogador$", 0
   prompt_jogada_invalida_pos db "Jogada Invalida - Posicao ja ocupada$", 0
   prompt_jogada_invalida_tam db "Jogada Invalida - Tamanho muito grande$", 0
   prompt_vazio_erro db "                                      $", 0
   prompt_vazio_jogada db "           $", 0 ; Menor para não estragar a caixa de mensagens
-  prompt_fim_jogo db "Jogo terminado!$", 0 ; String final quando uma partida acaba
+  prompt_fim_jogo_x db "Jogo terminado! X ganhou! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
+  prompt_fim_jogo_c db "Jogo terminado! C ganhou! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
+  prompt_fim_jogo_emp db "Jogo terminado! Empate! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
 
   jogador_da_vez db 0 ; 0 para o jogador X e 1 para o jogador C
   jogo_acabou db 0 ; 0 para jogo ainda em andamento e 1 para jogo terminado
@@ -136,5 +140,5 @@ segment dados
 
 
 segment pilha pilha
-  resb 512 ; Reserva 512 bytes para a pilha
+  resb 1024 ; Reserva 1024 bytes para a pilha
 topo_pilha:

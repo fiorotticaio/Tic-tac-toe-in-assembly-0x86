@@ -280,15 +280,24 @@ desenha_tabuleiro:
 ; Função desenha_jogada
 ; ******************************************************************************
 desenha_jogada:
-  mov cl, [buffer] ; Recebendo o caractere da jogada
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
+  
+  xor bx,bx
+  mov byte bl, [buffer] ; Recebendo o caractere da jogada
 
-  cmp cl, 'X'
+  cmp bl, 'X'
   je desenha_X
-  cmp cl, 'C'
+  cmp bl, 'C'
   je desenha_C
-  ret
-
-
+  
 desenha_C:
   mov ax, [xc]
   push ax
@@ -297,7 +306,7 @@ desenha_C:
   mov ax, 20 ; raio
   push ax
   call circle 
-  ret
+  jmp retorno_desenha_jogada
 
 desenha_X:
   mov ax, [xc]
@@ -339,140 +348,311 @@ desenha_X:
   push dx ; coord y2 da segunda linha
   call line
 
+retorno_desenha_jogada:
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
   ret ; Retornando da função
 
 desenha_diagonal_1:
-mov ax, 220
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 400
-push ax ; coord y1
+  mov ax, 220
+  push ax ; coord x1
 
-mov ax, 420 
-push ax ; coord x2
+  mov ax, 400
+  push ax ; coord y1
 
-mov ax, 200
-push ax ; coord y2
+  mov ax, 420 
+  push ax ; coord x2
 
-call line
+  mov ax, 200
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
 
 desenha_diagonal_2:
-mov ax, 420
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 400
-push ax ; coord y1
+  mov ax, 420
+  push ax ; coord x1
 
-mov ax, 220 
-push ax ; coord x2
+  mov ax, 400
+  push ax ; coord y1
 
-mov ax, 200
-push ax ; coord y2
+  mov ax, 220 
+  push ax ; coord x2
 
-call line
+  mov ax, 200
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
 
 desenha_coluna_1:
-mov ax, 220
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 400
-push ax ; coord y1
+  mov ax, 220
+  push ax ; coord x1
 
-mov ax, 220 
-push ax ; coord x2
+  mov ax, 400
+  push ax ; coord y1
 
-mov ax, 200
-push ax ; coord y2
+  mov ax, 220 
+  push ax ; coord x2
 
-call line
+  mov ax, 200
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
 
 desenha_coluna_2:
-mov ax, 320
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 400
-push ax ; coord y1
+  mov ax, 320
+  push ax ; coord x1
 
-mov ax, 320 
-push ax ; coord x2
+  mov ax, 400
+  push ax ; coord y1
 
-mov ax, 200
-push ax ; coord y2
+  mov ax, 320 
+  push ax ; coord x2
 
-call line
+  mov ax, 200
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
 
 desenha_coluna_3:
-mov ax, 420
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 400
-push ax ; coord y1
+  mov ax, 420
+  push ax ; coord x1
 
-mov ax, 420 
-push ax ; coord x2
+  mov ax, 400
+  push ax ; coord y1
 
-mov ax, 200
-push ax ; coord y2
+  mov ax, 420 
+  push ax ; coord x2
 
-call line
+  mov ax, 200
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
 
 desenha_linha_1:
-mov ax, 220
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 400
-push ax ; coord y1
+  mov ax, 220
+  push ax ; coord x1
 
-mov ax, 420 
-push ax ; coord x2
+  mov ax, 400
+  push ax ; coord y1
 
-mov ax, 400
-push ax ; coord y2
+  mov ax, 420 
+  push ax ; coord x2
 
-call line
+  mov ax, 400
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
 
 desenha_linha_2:
-mov ax, 220
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 300
-push ax ; coord y1
+  mov ax, 220
+  push ax ; coord x1
 
-mov ax, 420 
-push ax ; coord x2
+  mov ax, 300
+  push ax ; coord y1
 
-mov ax, 300
-push ax ; coord y2
+  mov ax, 420 
+  push ax ; coord x2
 
-call line
+  mov ax, 300
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
 
 desenha_linha_3:
-mov ax, 220
-push ax ; coord x1
+  ; Salvando contexto
+  pushf
+  push ax
+  push bx
+  push cx
+  push dx
+  push si
+  push di
+  push bp
 
-mov ax, 200
-push ax ; coord y1
+  mov ax, 220
+  push ax ; coord x1
 
-mov ax, 420 
-push ax ; coord x2
+  mov ax, 200
+  push ax ; coord y1
 
-mov ax, 200
-push ax ; coord y2
+  mov ax, 420 
+  push ax ; coord x2
 
-call line
+  mov ax, 200
+  push ax ; coord y2
 
-ret ; Retornando da função
+  call line
+
+  ; Recuperando o contexto
+  pop bp
+  pop di
+  pop si
+  pop dx
+  pop cx
+  pop bx
+  pop ax
+  popf
+
+  ret ; Retornando da função
