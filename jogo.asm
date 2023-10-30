@@ -59,15 +59,23 @@ exit:
 faz_jogada:
   call le_jogada ; Lê a jogada do usuário
 
-  ; Verifica se a primeira posição do buffer é igual a 's' (sair)
+  ; Verifica se o comando no buffer é igual a 's' (sair)
   mov byte al, [buffer] 
   cmp al, 's'
+  jne continua_jogo_1
+  mov bx, [tamanho_jogada] ; BX recebe o tamanho da jogada
+  cmp bx, 0x1              ; Verifica se o comado é apenas 's'
   je exit ; Se for 's', pula para o fim do programa
-  
-  ; Verifica se a primeira posição do buffer é igual a 'c' (novo jogo)
+
+continua_jogo_1:
+  ; Verifica se o comando do buffer é igual a 'c' (novo jogo)
   cmp al, 'c'
+  jne continua_jogo_2
+  mov bx, [tamanho_jogada] ; BX recebe o tamanho da jogada
+  cmp bx, 0x1              ; Verifica se o comado é apenas 's'
   je cria_novo_jogo ; Se for, pula para o início do programa
 
+continua_jogo_2:
   xor dx,dx
   xor ax,ax
 
@@ -119,16 +127,16 @@ segment dados
 
   rtn resb 1  ; Retorno de função
 
-  prompt_inicial db "Bem-vindo! X joga primeiro.$", 0 ; 0 no final para indicar o fim da string
-  prompt_comando_invalido db "Comando Invalido$", 0
-  prompt_jogada_invalida_vez db "Jogada Invalida - Vez do outro jogador$", 0
-  prompt_jogada_invalida_pos db "Jogada Invalida - Posicao ja ocupada$", 0
-  prompt_jogada_invalida_tam db "Jogada Invalida - Tamanho muito grande$", 0
-  prompt_vazio_erro db "                                      $", 0
-  prompt_vazio_jogada db "           $", 0 ; Menor para não estragar a caixa de mensagens
-  prompt_fim_jogo_x db "Jogo terminado! X ganhou! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
-  prompt_fim_jogo_c db "Jogo terminado! C ganhou! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
-  prompt_fim_jogo_emp db "Jogo terminado! Empate! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
+  prompt_inicial db             "Bem-vindo! X joga primeiro.$", 0 ; 0 no final para indicar o fim da string
+  prompt_comando_invalido db    "Comando Invalido$", 0
+  prompt_jogada_invalida_vez db "Jogada Invalida - Vez do outro jogador           $", 0
+  prompt_jogada_invalida_pos db "Jogada Invalida - Posicao ja ocupada             $", 0
+  prompt_jogada_invalida_tam db "Jogada Invalida - Tamanho muito grande           $", 0
+  prompt_vazio_erro db          "                                      $", 0
+  prompt_vazio_jogada db        "           $", 0 ; Menor para não estragar a caixa de mensagens
+  prompt_fim_jogo_x db          "Jogo terminado! X ganhou! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
+  prompt_fim_jogo_c db          "Jogo terminado! C ganhou! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
+  prompt_fim_jogo_emp db        "Jogo terminado! Empate! Use 'c' para reiniciar.$", 0 ; String final quando uma partida acaba
 
   jogador_da_vez db 0 ; 0 para o jogador X e 1 para o jogador C
   jogo_acabou db 0 ; 0 para jogo ainda em andamento e 1 para jogo terminado
