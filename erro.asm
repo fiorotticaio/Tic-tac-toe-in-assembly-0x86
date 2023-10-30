@@ -1,9 +1,7 @@
 ; Importando variáveis e funções
 extern prompt_comando_invalido, prompt_jogada_invalida_vez, prompt_jogada_invalida_pos, prompt_vazio_erro, prompt_jogada_invalida_tam
-; Exportando variáveis e funções funções 
+; Exportando variáveis e funções 
 global imprime_erro_comando_invalido, imprime_erro_jogada_invalida_vez, imprime_erro_jogada_invalida_pos, limpa_prompt_erro, imprime_erro_jogada_invalida_tam
-
-
 
 ; ******************************************************************************
 ; Função imprime_erro_comando_invalido
